@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>BUSCODOCENTE v8 — Centros de formación y docentes</title>
+<style>
+:root{color-scheme:light;--azul:#2563eb;--azul2:#eff6ff;--verde:#16a34a;--verde2:#f0fdf4;--naranja:#b45309;--gris:#f1f5f9;--borde:#e5e7eb;--texto:#0f172a;--mut:#64748b}
+*{box-sizing:border-box} :focus-visible{outline:2px solid #2563eb;outline-offset:2px} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--texto);line-height:1.45}
+header{background:#fff;color:#0f172a;padding:16px;border-bottom:1px solid #e5e7eb} header .wrap{max-width:1100px;margin:0 auto}
+h1{margin:0;font-size:28px;letter-spacing:.5px} h1 span{color:#2563eb} .sub{color:#64748b;margin:6px 0 0}
+.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;font-weight:bold;border-radius:20px;padding:2px 10px;font-size:13px;margin-left:8px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.roles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0} .roles button{border:1px solid var(--borde);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold}
+.roles button.act{background:var(--azul);color:#fff;border-color:var(--azul)}
+.persona{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.persona select,.persona input{padding:8px;border:1px solid var(--borde);border-radius:8px;background:#fff;color:#0f172a}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0} .tabs button{border:1px solid var(--borde);background:#fff;padding:8px 12px;border-radius:20px;cursor:pointer}
+.tabs button.act{background:#2563eb;color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px} @media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border:1px solid var(--borde);border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(15,23,42,.04)} .kpi b{font-size:28px;display:block;color:#0f172a} .kpi span{color:var(--mut);font-size:13px} .kpi-link{cursor:pointer} .kpi-link:hover{border-color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.12)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px} @media(max-width:700px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(15,23,42,.04)} .card h3{margin:0 0 6px} .mut{color:var(--mut);font-size:14px}
+.pill{display:inline-block;background:#fff;border:1px solid #e2e8f0;color:#475569;border-radius:20px;padding:2px 9px;font-size:12px;font-weight:bold;margin:2px 2px 2px 0}
+.pill.v{background:#f0fdf4;border-color:#bbf7d0;color:#16a34a} .pill.o{background:#fffbeb;border-color:#fde68a;color:#b45309}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 4px} input,select,textarea{width:100%;padding:9px;border:1px solid var(--borde);border-radius:8px;font-size:15px;background:#fff;color:#0f172a;color-scheme:light} input::placeholder,textarea::placeholder{color:#94a3b8}
+textarea{min-height:70px} button.btn{background:var(--azul);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold} button.btn:hover{background:#1d4ed8}
+button.btn2{background:#fff;color:#0f172a;border:1px solid #e2e8f0;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:bold}
+button.btnv{background:var(--verde);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold}
+button:disabled{opacity:.5;cursor:not-allowed}
+.filtros-bar{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px} .filtros-bar>div{flex:1;min-width:130px} .filtros-bar label{margin:0 0 3px;font-size:12px} .filtros-bar select,.filtros-bar input{padding:8px} .filtros-bar .btn-limpiar{flex:0 0 auto}
+.aviso{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin:12px 0}
+.ok{background:var(--verde2);border:1px solid #bbf7d0;border-radius:10px;padding:12px;margin:12px 0}
+table{width:100%;border-collapse:collapse;background:#fff} th,td{text-align:left;padding:9px;border-bottom:1px solid var(--borde);font-size:14px;vertical-align:top}
+.chat{display:grid;grid-template-columns:260px 1fr;gap:0;border:1px solid var(--borde);border-radius:12px;overflow:hidden;background:#fff} @media(max-width:700px){.chat{grid-template-columns:1fr}}
+.conv{border-right:1px solid var(--borde);max-height:520px;overflow:auto} .conv div{padding:12px;border-bottom:1px solid var(--borde);cursor:pointer} .conv div.act{background:var(--azul2)}
+.msgs{padding:14px;min-height:280px;max-height:420px;overflow:auto} .msg{max-width:80%;padding:10px 12px;border-radius:12px;margin:8px 0;background:var(--gris)} .msg.yo{margin-left:auto;background:var(--azul2)} .chat-head{padding:12px 16px;border-bottom:1px solid var(--borde);background:#fff}
+footer{color:var(--mut);font-size:13px;text-align:center;padding:24px}
+.plan{border:2px solid var(--borde);border-radius:16px;padding:16px} .plan.sel{border-color:var(--azul);background:var(--azul2)}
+/* ===== v8: iconos SVG, buscador admin, visor de documentos ===== */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;padding:24px}
+.login-card{width:400px;max-width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:36px 32px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.login-card img{display:block;height:56px;width:auto;margin:0 auto 10px}
+.login-sub{text-align:center;color:#64748b;font-size:15px;margin:0 0 20px}
+.login-tabs{display:flex;gap:4px;margin:0 0 8px;background:#f1f5f9;border-radius:10px;padding:4px} .login-tabs button{flex:1;padding:9px 6px;border:0;background:none;border-radius:8px;cursor:pointer;font-weight:bold;color:#475569}
+.login-tabs button.act{background:#fff;color:#0f172a;box-shadow:0 1px 2px rgba(15,23,42,.08)}
+.login-hint{font-size:13px;text-align:center}
+.demo-account{background:var(--gris);border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
+#app{display:none} .shell{display:flex;min-height:100vh}
+#sidebar{width:248px;background:#fff;color:#334155;position:fixed;top:0;bottom:0;left:0;z-index:30;display:flex;flex-direction:column;transition:width .2s;border-right:1px solid #e5e7eb}
+#sidebar .logo{padding:16px;display:flex;align-items:center;gap:8px} #sidebar .logo img{height:34px;width:auto;display:block} #sidebar .logo .mark{display:none;width:28px;height:28px;border-radius:8px;background:#2563eb;color:#fff;align-items:center;justify-content:center;font-size:17px;font-weight:bold;flex-shrink:0} body.sb-collapsed #sidebar .logo{justify-content:center;padding:16px 0} body.sb-collapsed #sidebar .logo img{display:none} body.sb-collapsed #sidebar .logo .mark{display:inline-flex} body.sb-collapsed #sidebar .logo .badge{display:none}
+#sidebar nav{flex:1;overflow-y:auto;padding:6px 10px} #sidebar .sec{font-size:11px;color:#94a3b8;padding:12px 10px 6px;white-space:nowrap}
+#sidebar nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;color:#475569;padding:11px 10px;border-radius:10px;cursor:pointer;font-size:15px;white-space:nowrap}
+#sidebar nav button:hover{background:#f1f5f9;color:#0f172a} #sidebar nav button.act{background:#eff6ff;color:#2563eb}
+#sidebar nav button .ico{font-size:18px;width:24px;text-align:center;flex-shrink:0} #sidebar nav button .n{flex:1}
+#sidebar nav button .bdg{background:#2563eb;color:#fff;border-radius:12px;padding:1px 7px;font-size:12px;font-weight:bold}
+#sidebar .userbox{padding:14px;border-top:1px solid #e5e7eb;font-size:13px;white-space:nowrap} #sidebar .userbox b{color:#0f172a;display:block}
+body.sb-collapsed #sidebar{width:68px} body.sb-collapsed #sidebar .lbl,body.sb-collapsed #sidebar .sec,body.sb-collapsed #sidebar .userbox .lbl{display:none}
+body.sb-collapsed #sidebar nav button .bdg{display:none}
+#main{flex:1;margin-left:248px;min-width:0;transition:margin .2s} body.sb-collapsed #main{margin-left:68px}
+#topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:10px;padding:10px 18px}
+#topbar .search{flex:1;max-width:420px} #topbar .search input{margin:0;background:#f1f5f9}
+#topbar .bell{position:relative;background:var(--gris);border:0;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer}
+#topbar .bell i{position:absolute;top:-4px;right:-4px;background:#dc2626;color:#fff;border-radius:50%;font-style:normal;font-size:11px;padding:2px 6px;font-weight:bold}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 18px;border-radius:10px;z-index:60;display:none;font-weight:bold}
+.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:14px} .bar-row .bl{width:130px;flex-shrink:0} .bar-track{flex:1;background:var(--gris);border-radius:6px;height:16px;overflow:hidden} .bar-fill{height:100%;background:#2563eb;border-radius:6px} .bar-row .bv{width:44px;text-align:right;font-weight:bold}
+.donut-wrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap} .legend{font-size:14px;line-height:1.9}
+@media(max-width:820px){
+ .login-card{width:100%;padding:28px 20px}
+ #sidebar{transform:translateX(-100%);transition:transform .2s;width:248px} body.sb-open #sidebar{transform:translateX(0)}
+ body.sb-open #overlay{display:block}
+ body.sb-collapsed #sidebar{width:248px} body.sb-collapsed #sidebar .lbl,body.sb-collapsed #sidebar .sec{display:block}
+ #main,body.sb-collapsed #main{margin-left:0}
+}
+.switch{position:relative;display:inline-block;width:52px;height:30px;flex-shrink:0} .switch input{opacity:0;width:0;height:0} .switch .slider{position:absolute;inset:0;background:#cbd5e1;border-radius:30px;transition:.2s;cursor:pointer} .switch .slider:before{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)} .switch input:checked+.slider{background:#2563eb} .switch input:checked+.slider:before{transform:translateX(22px)}
+.dias-row{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px} .dia-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid #e2e8f0;background:#fff;font-weight:bold;font-size:15px;cursor:pointer;color:#475569} .dia-btn.on{background:#2563eb;border-color:#2563eb;color:#fff}
+.diales{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:8px 0} .dial{text-align:center}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap} .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px} .cal-dow{text-align:center;font-size:12px;font-weight:bold;color:#64748b;padding:6px 0} .cal-day{min-height:74px;border:1px solid #e5e7eb;border-radius:10px;padding:6px;font-size:13px;cursor:pointer;background:#fff} .cal-day.vacio{border-color:transparent;background:none;cursor:default} .cal-day.hoy{border-color:#2563eb} .cal-day.sel{background:#eff6ff;border-color:#2563eb} .cal-day b{display:block;margin-bottom:4px} .cal-ev{display:block;font-size:11px;background:#dbeafe;color:#1d4ed8;border-radius:6px;padding:2px 5px;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .cal-ev.contratacion{background:#dcfce7;color:#15803d} .cal-mas{font-size:11px;color:#64748b} .cal-dot{display:none}
+@media(max-width:700px){.cal-day{min-height:46px;padding:4px} .cal-ev{display:none} .cal-day .cal-dot{display:block;width:7px;height:7px;border-radius:50%;background:#2563eb;margin:3px auto 0} .cal-day .cal-dot.contratacion{background:#16a34a}}
+.ic{display:inline-flex;vertical-align:-3px} .ic svg{width:16px;height:16px}
+#sidebar nav button .ico{display:inline-flex;align-items:center;justify-content:center} #sidebar nav button .ico .ic svg{width:19px;height:19px}
+#topbar .bell{display:inline-flex;align-items:center;justify-content:center} #topbar .bell .ic svg{width:19px;height:19px}
+.btn .ic svg,.btn2 .ic svg{width:15px;height:15px}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px} .modal-doc{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:86vh;display:flex;flex-direction:column;overflow:hidden} .modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--borde)} .modal-body{padding:20px 22px;overflow:auto;font-size:14px;line-height:1.6} .modal-body h4{margin:16px 0 6px} .modal-body h4:first-child{margin-top:0} .modal-foot{display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--borde)}
+</style>
+</head>
+<body>
+<div id="login">
+  <div class="login-card">
+    <img id="loginLogo" src="" alt="buscodocente">
+    <p class="login-sub">Acceso a la plataforma</p>
+    <div class="login-tabs" id="loginTabs"></div>
+    <label>Cuenta de demostración</label>
+    <select id="loginAccount"></select>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="tu@email.es">
+    <label>Contraseña</label>
+    <input id="loginPass" type="password" placeholder="demo123">
+    <div id="loginError" style="color:#dc2626;font-size:14px;min-height:20px"></div>
+    <p><button class="btn" style="width:100%;padding:12px" onclick="doLogin()">Entrar →</button></p>
+    <p class="mut login-hint">Demo: la contraseña es <b>demo123</b>. ¿Aún no tienes cuenta? El administrador valida las cuentas tras el registro.</p>
+  </div>
+</div>
+<div id="app"><div class="shell">
+  <aside id="sidebar"></aside>
+  <div id="main">
+    <div id="topbar"></div>
+    <div class="wrap" style="max-width:1180px">
+      <div id="vista"></div>
+      <div class="aviso"><b>Cómo probar esta v8 en 2 minutos:</b> 1) Entra como <b>centro</b> y ve a <b>Selección docente</b>, filtra y pulsa <b>Contactar</b> o <b>Contratar</b>. 2) Cierra sesión y entra como <b>docente</b>: verás esa contratación en <b>Contratación</b> y en <b>Mensajería</b>. 3) Como docente contratado, añade un registro en <b>Seguimiento</b> y el centro lo ve al instante. 4) En <b>Suscripción</b> cambia de plan y verás cómo se ocultan o se muestran los datos de contacto. <button class="btn2" onclick="resetDemo()">Restablecer demo</button></div>
+      <footer>BUSCODOCENTE v8 · Prototipo funcional sin backend: los datos son de demostración y viven en tu navegador. No se intercambian datos de contacto fuera de la plataforma antes de la contratación.</footer>
+    </div>
+  </div>
+</div></div>
+<div id="overlay" onclick="document.body.classList.remove('sb-open')"></div>
+<div id="toast"></div>
+<script>
+var LOGO_BD="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCADMAwADASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAYDBAUHCAECCf/EAFEQAAEDAwEEBAcMCAMFCQEBAAEAAgMEBREGBxIhMRNBUXEIImFzgZGxFBUjMjQ1NlJUkqHBFkJydIKys9EzYnUXJDeU8BhDRFNVVpPS4aLC/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAUGAgMEAQf/xAA8EQACAQMBBAcGBQMEAgMAAAAAAQIDBBEFBhIhMRNBUXGBscEUIjRhkaEyM9Hh8CNC8RUWJHI1UmKCkv/aAAwDAQACEQMRAD8A6c9+qD7Q31FPfqg+0N9RUQRZ7qMd4l/v1QfaG+op79UH2hvqKiCJuobxL/fqg+0N9RT36oPtDfUVEETdQ3iX+/VB9ob6inv1QfaG+oqIIm6hvEv9+qD7Q31FPfqg+0N9RUQRN1DeJf79UH2hvqKe/VB9ob6iogibqG8S/wB+qD7Q31FPfqg+0N9RUQRN1DeJf79UH2hvqKe/VB9ob6iogibqG8S/36oPtDfUU9+qD7Q31FRBE3UN4l/v1QfaG+op79UH2hvqKiCJuobxL/fqg+0N9RT36oPtDfUVEETdQ3iX+/VB9ob6irqCeOpjEkTt5h5FQZSywfNkfe72rxrATyZBERYmQREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAQNfUbDLI1jebiAF8qtRfK4fON9q2msvv0druyL7yfo7XdkX3lKEWG8zPdRF/wBHa7si+8n6O13ZF95ShE3mN1EX/R2u7IvvJ+jtd2RfeUoRN5jdRF/0druyL7yfo7XdkX3lKETeY3URf9Ha7si+8n6O13ZF95ShE3mN1EX/AEdruyL7yfo7XdkX3lKETeY3URf9Ha7si+8n6O13ZF95ShE3mN1EX/R2u7IvvJ+jtd2RfeUoRN5jdRF/0druyL7yfo7XdkX3lKETeY3URf8AR2u7IvvKzrKKWhkEc27vEZ4HKmijWpflzPNj2lep5PGjEKWWD5sj73e1RNSywfNkfe72pLkeRMgiIsDMIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgIGq1F8rh8432qiq1F8rh8432raaybKB6y1vc7DeTR0jacxCNr/HYScnPlU8Wo9pv0nd5hn5qQ0ejCrcbtRZWGROvV6lC136UsPK9S/tG0e8110pKWVlIGTTMY7dYc4Jx2rZq0Rpz5+t37zH/ADBb3W7W7enRnFU444HPs7dVa9ObqybwwiIoQsQREQBERAEREAREQBERAaq287T73s3prPJZY6N7qx8rZPdEZdwaG4xgjtK1B/2ptdfZ7N/y7v8A7qY+F18i0152o9jFzavoWg6Za1rKFSrTTbzx8WQ13XqRqtRfA/QixVklxslvrZt0S1FNFK/dGBvOaCcetYfUvy5nmx7SsjpP6LWb9xg/phY7Uvy5nmx7SqFJYm0iX/tMQpZYPmyPvd7VE1LLB82R97vasZcjyJkERFgZmK1TdZ7LY6iupwx0sW7gPGRxcAtf/wC1S9fZ6L7jv7qZ7QfonW/wfzhaZVm0Wzo1qLlUjl59EU/aC+uKFxGNKbSx6s3/AGupfW22lqZAA+aJr3AcskZVyrDT/wAx2/8Ad4/5Qr9VyqkptLtLZRbdOLfYgiIsDYEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAWrdum1G8bNKW0S2ino5nVr5Wye6WudgNDcYwR2raS598Ln5v0352f2NUpotGFa9p06iynnh4M57qTjSco8zD6V8JjV171LarXUUNobDWVcUD3MieHBrnAHHj8+K6aXBWzz6d6e/wBRp/6gXeqktprOjbVYKjHdTT8zRYVJTi3J5CIirJ3hERAEREAREQBERAEREAREQBERAEREAREQBERAERal8Je+XOx6CgdbK6ejdUVrYZXQu3XOYWPJbkcccAum0tnc1o0YvDk8GFSe5FyfUZrXG23S2jJhQmpFyubnhgpaVwO4SceO7k3u5+RbAactB7Qvzzt5LrjTEkkmZmSf2l+hbPiN7gpfXNKp2EaUYPLecvuwc1pcSrOTZ6iIq+dgREQBERAEREBA1WovlcPnG+1UVWovlcPnG+1bTWTZaj2m/Sd3mGfmtuLUe036Tu8wz81K6F8T4P0IPaX4PxXqYTTnz9bv3mP+YLe60Rpz5+t37zH/ADBbur7lSWunNRWVEcEY63Hn3dq6dfi5VYJc8HJsxJRo1JSeFlFyigtftWoonltFRS1AH673bgPo4lWA2t1G9xtcW75JTn2KOjpF3JZUPuiUnrllF4c/szZKKFW/anbKh4ZWU81Ln9b47fw4/gpdRV9LcYRPSVEc8Z/WYcrlr2lah+ZFo7ba+oXH5M0/P6FdERc51BEQkAEk4A60ARa41jt+0VpKR9N7tddKxhwYKEB+6ewvzuj1rXNb4XMm+RQ6Vbu9Rnq+PqDVK2+i3teO9Cm8fPh5nPO6pQeHI6NRc6W/wuT0gFw0qAzrdT1XH1Fv5rauh9sWkdeFsFur/c9cf/B1Q3JD3ccO9BKxudHvLaO9VpvHbz8j2nc0pvEWay8Lr5FprztR7GLm1dJeF18i0152o9jFzar7s3/4+Hj5siL385/zqP0B0n9FrN+4wf0wsdqX5czzY9pWR0n9FrN+4wf0wsdqX5czzY9pXzSf5ku8m1+ExCllg+bI+93tUTUssHzZH3u9qxlyETIIiLAzI7tB+idb/B/OFplbm2g/ROt/g/nC0yrfs/8ADy7/AERRNp/io/8AX1ZNK/aJUw22lt9p+C6KBjHzuGSSGjIaOrvUdfqS8yPL3XSs3vOuCm2gdFUc1Ay6XKFs7peMUbx4rW9pHWSpVX6Vs1wp3Qy2+nbkYDo2Brm9xC0Sv7O2qOnGGePF8Dphpt/eUlWlUxw4Ljy6u41xZNol3tsrRVymtp8+M2T4wHkd/dbTtdzprvRR1lI/fikHpB7D5VpG/WiSyXWooJDvdG7xXfWaeIPqUq2V3V8VxntrnHo5mdI0djhz/D2LLU7ClUoe0UVjr4daMNG1OvSuPZbh5TeOPNM2De5pKaz100TiySOB7muHUQDgrT/6a6h/9Vn/AA/stu6i+Ybj+7SfylaHWvQaNOpTm5xT49aN20terTqQVOTXB8ng3fo6sqLhpyjqaqV0szw7ee7mfGIWZWA0D9FKDud/MVn1A3aSrzS7X5llsZOVtTb57q8jUuptWXyjv1fT09xmjijlLWtGMAepSHZtfLjd5q4V9XJUCNrC3exwyTlQjV/0muXn3KU7JP8AHuX7MftKs15QpLT95RWcLjjuKhYXNaWp7jm2t6XDLx1mxJpo6eJ80rwyNjS5zjyAC1hqDaXXVUz4bURTU4OBJjL3+XjyUw2gySR6UrOjz42412OwuGVpppAcC4ZGeI7VyaJY0qkXWqLPHCR27Q6jWpTjQpPGVlsyMmo7zM4l90rCT2SuC+4NU3ymdvR3Srz/AJpC4eorZdgv2lJaaOKkdSUpAA6OVoY7PeefrVbUek7fqKhd7nZTx1Q4xzsAx3HHMLe9Toxn0dajur5r0wcy0ivOn0tC43pfJvzyYHSW0aSqqY6G8bm9Id1lQ0Y49jh+a2AteUmyXBBqroe6KPH4krYEERhgjiL3SFjQ3fdzdjrKh9S9lc1K2feuontI9sVNxu13PKz4nxWVkFBTSVVTI2OGMZc49S1jfdplwq5HRWv/AHSAcA8gF7vL5FebVLw81FPaY3Yja3ppAOsnOB/12qIWC0Pvl2p6Bjt0SHxnfVaOJKldM0+lGj7TXWev5JELrGqV51/ZLZ46uHNsSajvMji510rCfOuH5q6odaX6geHMuM0gH6sp3wfWtq0WkbHQwCKO3U7+GC6Vge53eSolrjQrGNiq7LRv3nO3JIIhkeRwHUttHUrOvPopQwn2pYNFfSL63p9NGo211JvP7kg0hrSDUbDBK0QVrBlzAeDx2t/spKtTWDRmpqS4U9bHStgMTw74SQDI6xgceS2pVVLKSllqZeDImF7u4DKhdRt6NOri3aafUuOCw6TdV6tBu6i011tYyu0xGp9W0emoR0nw1S8eJC08T5T2Ba2uWvr7cHuLas0sZ5Mg8XHp5rEXe5zXi4z1s5JfK7IH1R1D0BSjQmior2w3C4b3uVrt1kYOOkI55PYp2lZW1jR6Wusv68exFbrahd6lcdDbPEfpw7WyODUN4Dt4XStz55391mbRtGvNvkAqpBWw9bZPjeh391sV+jbBJD0RtdOG4xkNw7181rTWmkzpurY6Fzn0k+ejLubT1tKW93Z3suilDD+aXoLmxv8AT49PGplLnhv7pm1LHfaO/wBGKqjfnHB7D8Zh7CsgtJ6PvkljvUMu+RBK4RzN6i09fo5rdFTUR0tNLUyHEcTDI4+QDJUFqVj7LV3Y8U+X6Fl0jUfbKO9L8S5/qa62vbZ6DZtTNo6eNlbep270dOXeLE3qe/HHHYOtcz3zbJru/VD5ajUdbA1xyIqV/Qsb5AG4/FYPV+o6nVmpbjeqp5dJVzOeAT8VufFaPIBgLafg9bILfrP3RqG/wme3U0nQw0xJDZpAASXf5RkcOslXShY2mlWvTV45l1vGXnsRqnVqXFTdg+BBrHth11Yahs1NqOumAOTFVSGZjvIQ7P4LPbWNrUG07TtiEtL7kudFLL7ojbxjcHBuHNPYcHgeS6iq9m2ja2iNFNpm09AW7uG0zWkdxAyPWuS9tGzhmznVfuSkc99tq4+npXPOS0ZwWE9eD+BC1abfWN9cpxp7lSPFcuP0Mq9GrSg05ZTMDs8+nenv9Rp/6gXeq4K2efTvT3+o0/8AUC71Udtf+dT7n5m/TfwyI/rjXVn0DZX3W8TbrfixQs4yTP8AqtH/AFhcw6x8JDWOoZ3stU7bHR58VlPgykf5nnjnuwsRtv1zPrXXNaRITQUD3UtKzPDDThzu9xBPdhfWxrZVLtLvUoqJX09qot11VKz4zs8mN8pwePUF3adpNrZW3tV4svGePHHyx2+pprXFSrU6OmRx+0DV0knSO1PeS/t92Sf3Uj03t515p2djvfmW4wN5wV3wrXD9o+MPQV09SbFtn1JR+5G6XoJGEYL5Wl7z5d4nPqWi9u2w+l0XTDUenRILW6QMnpnEuNOTycCeO6Tw48jhbLbVtOvans8qWM8spfxHk7atSW+pG7Nlu2Cz7S6V0cTfcV0hbvTUb3ZOPrMP6zfxCnq/P3TWoa7St8o7zbpXR1NLIHtweDh1tPkI4Fd5aevNPqKx0F3pf8GtgZM0dm8M49HJV3XtIVlUU6X4JfZ9n6HbZ3LqrEuaMbrrXdo2f2N92u0h3c7kULPjzP8AqtH59S5d1f4RWtdR1DxQVnvLR5O5FSfHx/meeJPdhU/CD1hNqfaDWUgkJorUTSQszw3h8d3eXcO4BWmxPZrHtH1Q+nrXSMtlFGJqksOHP44awHqyc+gFT2maXbWdp7XdLLxnjxx2JLtOOvcVKtTo6bI27X+rnSdIdT3kv5592Sf3Uk0zt515pyoY43iS5QDG9BXfCBw/aPjD0FdTw7J9CwUfuRmlbUYsY8aAOcf4jxz6Vz5tb2DXG0aoiGjbRW11vrWGQRRNLxTPBwWlx6uRGT7Fna6tp17J0alNR70sfseVLatSW9GWTf8Asz2mWvaVZTW0QMFVAQ2ppHnLonHrHa09RUwJAGTyC5t2IbLdomjNXU92qrfFR2+Vpiq45ahu86Mjqa0niDgrZPhA6xm0ls+qPckhjrLi8UcTwcFoIJeR/CCPSqveafSd6re0kpRljHHOP8eR30q0ui36iw0Qjat4SbrXWT2XRohlliJZLcHjfY13WIxyOO08PIVpC4bTdaXSYy1WqLs5xOcMqHMaO4NIAUbijfNIyNg3nvcGtHaSuydnOw/TOlLJTi42ukuV1kjDqiepjEgDiOLWg8ABy8qtldWOjUYpw3pPuy+15fIjodLdSfHCOZLPtf13Y5WvpdTXB4aQejqJOmYfIQ7K6I2P7eqXXkrbNeooqG9Y+DLD8FU457ueTvJ6lQ20bE9P3TTNdebHboLddKGJ0+KZgYydjRlzS0cM4BwVyrQ1tRbayCtpJXQ1ED2yRyNOC1wOQVjChZazbylThuyX1T8OaPXOrazxJ5R+hy0L4SevNTaQu1khsN3qKCOeCR0jYg3xyHAA8QVt/RGohqvSVqvYADqynZI8DkH4w4feBWgvC4+e9Pfu0384VZ0KgnqEaVWOcZynx5JnfdzfQuUX2GD2Z7c9Q0+q4Z9V6kqp7RFDM+WJ4b45DDugADiS7GFaa58IvVupauRloqX2S3AkMjpz8K4drn8892FrO1W6e73Kkt1MAZ6qZkMYP1nHA9q7M0VsS0fpK2RQyWmkuVbujpqqriEhe7rwDkNHkCs+qf6fYVFWnTTk1hJJY4dfYcFv01aLipYRyVFtD1hDN0zNUXkSZzn3XIfzW29k3hG3WO601m1hO2rpKhwiZXFobJC4nA38cC3y8wsx4Ruyyw0Gmf0os1BBb6mmmYydkDQxkrHHGd0cAQccR5VzWDg5C6qFOz1a1clDHVyWU+81ydW3qYyfolO4inkc08QwkH0LhPVO0PVOqoTQXu9VNdSxzdIyOQNwHDIB4DsJXaujKx110bZaufi+ooIXvyeZLBlaL8IfZrpTSGkKW42O0R0dVLXNjfI2R7iWljyRxJHMBVnZ2vRoXLo1Y5k2knhcMZz3eB33sJTp70XwOeo3uie17DhzSCD2ELZekdsWva7VNmo6nU1bLBNWwxSMIbhzS8Ajl2LXFFG2WsgjeMtdI1pHaCV2tQbEtn9BU09bTadhjqIHtljeJZDuuByD8btCs2t31tbxjG4hvOSeOCePqcFpSqTbcHjBOScDJXP+1fwkn2ysnsujRDLLESyW4vAe0O6xGORx2nh5FNfCD1lNpLZ/O2jkMdZcnijjeDgsaQS8j+EEelccRRPnlZFG0ue9wa0DmSTwVf2c0enXi7m4WUuCXV3s7L25lB9HDmSOv2ma0ucplqtUXdzic4bUuYB3BpACurNtf13Y5myUupbhIG/93USdMw+h+V07s72H6Y0nZadtfa6S5XSRgdUVFTGJAHEcWtB4ADl2rA7adidguWma29WO3QW650MbpyKZm6ydjRlzS0cM45EKQjrmnVKvs/RLdbxnCx9Ow0u0rKO/vcS72P7eqTXsrbNeIo6G9buWbh+Cqcc93PJ3k9S22vzxoK6otlbBW0kroainkbJHI08WuByCu9NFahbqrSdqvbcA1lOyR4HU/GHD0EFQ20Wkws5qrR4Rl1dj/c6rK5dROMuaM0iIq0dxA1WovlcPnG+1UVWovlcPnG+1bTWTZaj2m/Sd3mGfmtuLUe036Tu8wz81K6F8T4P0IPaX4PxXqRy2VYoLhTVZaXiGVsm6OvBzhXF7vtZfqx1TVyE/UYPisHYAscp9oDRcdaxt2uMe9Fn4GJw4P/zHydist3Vo269oqLiuC/YqFjRr3T9mpPg+L7O9kZtekrzeGiSlon9GeUj/ABWnuJ5rIT7NtQwsLxBDLj9Vkoz+OFuAANADQABwACKuz1+u5ZikkWuGzFso4nJt+H6HPtXR1NDMYKqCSGRvNr24KubNe66x1QqKKYsP6zD8V47CFua/6eotQUbqeqjG+B8HKB4zD2j+y0rdbZPaK+aiqRiSJ2MjkR1Ed6mrG/p30HCa49aK9qOmVdOmqkJcOp9aZunTeoKfUVubVQ+K8eLJHnix39llFpjQ99dZL3EXOxT1BEUo6uPI+g/mtzqs6nZey1d2P4XxRb9H1D2yhvS/EuD/AF8TySRkUbpJHNYxoLnOccAAdZXKO2jbvW6oq57HpypkpbLGTHJKw7r6s54nPMM7B19fYtmeExrqTTulIrFRTGOsu5LXlpwWwN+N6yQO7K5NVl2Z0iEo+11ln/1Xr+h7fXDT6OPiACTgcSVOtN7Edd6ngZU0dkkhp38Wy1bhCCO0B3EjuC3D4P2xijpLZT6t1BStnragCSjglblsDOp5HW48x2DHWt9Ldqm0/Q1HStUnjm3y8DG3sN6O9UZxtdPBz2h22EyttcFY0DJFLUNc71HBPoWvqmluFjrzDUw1NDWQOB3XtMckbhyPaF+hShm0zZdZ9o1ofBVRMguMbT7mrWt8eN3UD2t7Quay2sm5qN1Fbr611eHWbKunLGab4nJ+sdptz1xpyz228kz1lskkxVHnMxwaBvf5hu8+tQ1X19slbp271dpuMRiqqSQxSN8o6x5DzHerFXS3pUqdNKivd58OXHiRc5Sb97mfoDpP6LWb9xg/phY7Uvy5nmx7SsjpP6LWb9xg/phY7Uvy5nmx7Svjs/zJd5ZF+ExCllg+bI+93tUTUssHzZH3u9qxlyETIIiLAzI7tB+idb/B/OFplbm2g/ROt/g/nC0yrfs/8PLv9EUTaf4qP/X1ZvjToaLFbwzG77nj/lCyCiWzvUEFws8VvfIBVUo3Nwni5vUR7FK5JWQxukke1jGjJc44ACrN1SlTrShJcclwsq0KtvCcXwwjVO1JrW6ijI5up259blY7PiRquix17/8AKVQ1jeWXu/VFTEcwtxHGe1o6/SclZfZdb3VF9fVkeJTRHj/mdwH4ZVsadHTmp893zKPFqvqqlT5b2fozY2ovmG4/u0n8pWh1vq+sMlkr2N4l1PIB90rQq5Nnvy596O7an8yn3M3RoH6KUPc7+YqQKLbNq2Ko01FA14MkD3Ne3PEZJI9qklVVQ0VO+oqJGxxRjLnOOAFAXsX7TNY45fmWfT5x9kpyzw3V5GlNX/Sa5efcpTsk/wAe5fsx+0qE3asFwudXVjIE0rnjPYTwU22Sf49y/Zj9pVq1CLjp7i+pL0KXpc1PU1Jcm5eTNgV9DDcqOajqG70UzS1wWob9oW62eV5jgfVU2fFliGeHlHMLaGodR02m6aOoqop5GyO3R0YB4+XJUXdtYpTKxsdulEZcA573gEDPE4ChNLleU05UY5iyw6zGwqtQuJ7s0a1LS0kOBBHMFXFJcaygcHUtVNAR9R5C3fUWm03mJss1JTVLHjea/dBJB7Co1ftnVlFDUVNMZKN8bHPB38s4DPEFSlLXKNT3KsWvuv54ENW2cuKS6SjNPHg/54mAsW024UkjY7mBVwE4LwAHt8vYVtClqYqynjqIHh8UjQ5rh1grntbj2dGQ6Vpukzwc8Nz2bxXLrdjSpwVamsPODt2d1GtVqOhVeVjKb5kA2hvc7VdZvfqhgHduhXey8A6kcTjIp349YVTajb3U97jrA34OoiAz/mbwP4YWE0ld2WS/U1XKSIslkhHU0jGfzUjBdNp27Dnu+RE1H0GquVTkpZ8GzeCL4hniqImywyNkjcMtc05BCiuv9UOstCynoqgMrZXAjdwSxo5k9/JVChbzrVFSjzZe7m6hb0nWm+CJasLrRzm6WuRacHosejIytf2/aLqLpo4d6Cpc9wa0Pj4knh1YWzbnROuVnqaSTd35oSw45bxH912VbOdnVg6uOfV8mcFG/p6hQqRo5zjHH5pmhFu3RLGM0tbgzGDFk95JytKyxPhlfFI0tewlrgeohbL2balp5Le20VErWTxE9FvHG+0nOB5Qp/XKUqlupQ44eSsbOVoUrpxnwysLvyTpRDagxjtONc74zZ27vqKl5IAyTwWsdpepKe4SRWykkbIyF2/K9pyC7kAO7iq/pVKU7mLj1cWWjWq0KdnNSfNYRBuS3HqqST/Z3dpOPSG0yk9/RFaqsdsku91pqKME9I8bx7G9Z9S3fcbfHcLVU254HR1ED4CPI5pH5qX1yrGNSkn1cfIhdl6Ut2rPqeF5n56LsjwcGxN2UW0x4y6Wcv8A2ukP5YXIV2tlRZrpV22qYWT0szoZGnqLSQfYuiPBb15Qi11OkK2dkNUyY1FIHnHStdjeaPKCM48vkVh2lpSrWO9T4pNPw4/qSlhJRq4Z0EuefC6ij9zabl4dJv1DfRhi6Gc4NBc4gAcST1LkbwkNeUertWU9vtk7Z6O1Ruj6Vhy18rj42D1gYA9BVV2aoznfRlFcI5b+jRIX0kqTT6yB7PPp3p7/AFGn/qBd3V7nMoahzDhzYnEHy4K4R2efTvT3+o0/9QLvVzQ5paRkEYKkdruFan3PzNOm/hkfnbK5z5XucSXFxJJ6zldU+ClBEzQVwlaB0klxeHnr4MZj2rnPX+nJ9Kaxu1omYWdBUPMef1oySWEd4IWzfBr2l0Glq+r07eJ209LcHtkgnecMjlAwQ49QcMce0Kd1ynK509yo8eT8DktGqdbEu46oUP2wQQ1GzLUjJwNwUT3jP1m8W/iApex7XtD2ODmkZBByCFo/wktplvotOzaRt9THPcK0tFSI3Z6CIHOD2EkDh2ZVB0u3qVrqnGmuOU+7D5kvXmo022ctrtPwf5ZJdk9jMji4tbK0Z7BK7C4wpqaasqIqanjdJNK8MYxoyXOJwAF3poPTv6KaPtFkON+kpmskI6383f8A9Eq4bXVYqhCn1t5+if6kbpsXvt/I4d1c5z9VXpziXONdOST1/COW+vBFa33LqV+Bv79OM9eMPWotsWnZNNbRr3SPZuxy1DqmE44Fkh3hj1kehSjwb9eUWkdWVNDdJ209HdY2x9M84bHK05bk9QOSM+ULu1ODudLfRccpP6YZpt3uXHvdp10i8Y9r2h7HBzSMgg5BC582+7Z7lYr/AEVo0leeglpWudWvhDXtLzjdYcgjIAJPevn9hY1Lyr0NLn9kTNatGlHekdCLn7wuZXi2aciB8QzTuI8oa3HtKw2zDbvtA1Nq212Gb3BXR1MobK91PuvZGOLnZaQODQepTTwpdPzXPQ1Lc4Gl3vZVB8gHVG8bpPr3VMWVjPT9SpQrtcez55S+5zVaqrUJOBynBLJBPHLCS2SNwcwjqIOQp/8A7cNpv/uCs/5eP/6qCUNU6hraerYMuglbIB5WnK7z0pfrRq+w0l5tvQSQVDA4gAExu62nsIPBWfXb2FqoSqUVNPPF9X2fM4LSk6mVGWDkSfbTtJqYJIJr9VvjkaWPaaePiCMEfFUE9zT/APkyfdK7s17qy1aC01VXuugik6IBsUHBrpnk8Gj/AK5LWFt8KfSM+6LhYLhSE8zG2OVo/EH8Fw2OrVJU3UtbTh14aXobattFPFSpxJN4N8kr9ldAyXIMU87GgjGBvk/mta+Fx896e/dpv5wuh9O3mi1DZaW7W5kjKSqZ0kXSR7ji08jjqyuePC4+e9Pfu0384UPo9V1dX6RrDbk8dnBnTcx3bbGc8jWGyOJk20zTTJG7zfd8Zx3HI9i7nXDWx7/ifpr9+Yu5Vu2uf/Igv/j6sx038D7zXu3+Lpdk99443WxO9UrVxYu19vP/AAn1B5uP+q1cUKW2S+En/wBvRHPqP5i7v1O8tm/0A05/p1P/ACBa68Kz6AUP+os/pyLYuzf6Aac/06n/AJAtdeFZ9AKH/UWf05FWNO/8pH/s/U7q3w77jlq3fOFL51n8y/QxnxG9wX540cgiq4JDybI1x9BX6FU9RFLSxTtewxyMa5rs8CCOHFTW2C40f/t6HNpv93gaC8Ll7ve/TbM+KZZzjy4aub4JZIJ45oXFskbg5hHUQchdVeFPp+W5aJo7rCwvNsqsyY6o3jdJ9Yb61y1b6x1vr6asYA51PKyUA9Zac/kpbZualp8UuLTfnn1Oa+TVZ5J1/tw2m/8AuCr/AOXj/wDqqdTtn2kVdPLTT32qkilYY3tNPHhzSMEfF7F17pW+2fV1ipbxbDBLBUMDsADLHdbSOog8FZ6+1batA6aqb3WwRSdFhsUAw10zyeDRw9PcCoOOs0XUVJWcd7OMcOf/AOTrdrLd3ukeP58zhT3NP/5Mn3SuxPBxllk2VW5kocDFNOwB3Z0hP5qM23wp9IVBaK+w3CkJHEsbHKB+IP4LcenrxR3+zUl1t7JGUtWwSxCSPccWnkS3qymv39xVoKlXoOHHOc57fkLOjCM3KE8mQREVQJIgarUXyuHzjfaqKrUXyuHzjfatprJstR7TfpO7zDPzW3FqPab9J3eYZ+aldC+J8H6EHtL8H4r1I3bqR1fX09Iz400jWes4W/KaCOlp44ImhscbQxoHUAtM6FjEuqreCMgPLvU0lbqW/aCo3UjT6ks/X/BzbLUkqU6nW3j6f5CIirxaQtc7WLc1r6O4tGHOzC89uOI/NbGUQ2oRh+m2vPNlQwj1EKQ0qo4XUGuvh9SL1mkqllUT6ln6GpwcHIW9tOVxuVjoqonLnxN3v2hwP4haIW5NnTi7SlLk5w54H3ip3aCCdGM+x+ZWtl6jVxOHU15P9zl3wjr668bTq2AOzFboo6Vg8oG878XFQvQ9i/SbV1os5BLKuqjjfj6mcu/DKuNpFUa3X+opznLrjPz8jyPyUj8HqDp9rFlyAdzpn8fJE5WuP/F03Mf7YffH6kw/6lfj1v1OzYYmQRMhiaGRsaGtaOQA4AL6RF8nLCEREBzB4V2mo6LUFrv8LA33fC6GYjrfHjB+6QP4VoldU+FfAx+h7ZMR48dwaAcdRjfn2BcrL6js5WdSwhnqyvuQF7HdrPB+gOk/otZv3GD+mFjtS/LmebHtKyOk/otZv3GD+mFjtS/LmebHtK+Zz/Ml3k4vwmIUssHzZH3u9qiallg+bI+93tWMuQiZBERYGZHdoP0Trf4P5wtNNGXAeVdDPjZK0se1r2nmHDIVH3BSfZYP/jCmNP1VWlN03HOXnmQGqaK72qqinjCxyz2/M0/f9K3HTc4qIelfTHDo6iPILfIccisXVXm5VsXRVNfUzR/VfISPUt9FrXN3SAQeGCOCx0mmrLK8vfa6NzjzPRBdVDXFhdPDLXWcdxs3LL9nqYi+p5NL2qzV16qW09FA6RxPF2PFb5Sepbk0xp6HTltbSsIfK470sn1nf2WSp6aCljEdPDHEwfqsaAPwVRcWoapO69xLESR0vRqdk99vel29nceOaHtLXDIIwQtL6r0rVWCukIie+je4mKUDIx2HsK3SvHsZI0se1rmnmCMgrTYX87SbaWU+aN+p6ZC+goyeGuTNAUVwq7dL0tHUywPPAujcRlZKH9INWztpxLVVmD+u47jPKeoLbbtMWR7y91qoy48c9EFfwU8NNGI4Io4mDk1jQB+ClauuU370KfvdrIWjs3VXuVKvudiyaO1FZ/eK5voDJ0jo2MLndpLQTjyKXbI/8e5fsx+0rYUlJTyuLpIInuPW5gJX1FTww56KKOPPPdaBlc1xrDrW7oyjxeOOTrtdBVvdK4jLgm+GPXJaXq0U97t0tDUDxXjg4c2u6iFp2+6WuVhmc2ogc+HPizsGWOH5dxW8F45ocC1wBB5grlsNSqWmUuMX1HZqWkUr3Em8SXX+pou3alu9qj6Kjr5oo/qc2juB5JcdTXe6x9FWV80sfWzOGnvA5rck2nLPO7fltlG53aYgvYNPWimdvw2ykY7tEQypT/WbbO/0XveHmQ/+37vd6Ppvd7OPkak05pC4X+du7E+Glz487xgY8naVuShoobdSRUlO3diiaGtHkVcANGAAAOoIoq+1Cpdtb3BLkia03SqdlF7rzJ82YzUVgp9Q219HMd13xo5AOLHdq07edO3GxTujrIHBufFlaMsd3Fb1XzJGyVhZIxr2nmHDIKzsNTqWvu4zHsNep6PSvffzuy7f1NB01zrqNpZTVlRC08xHIWj8FR+Gq5v+8mlefK5zit4v0xZJHFzrVRknn8EFdUlroaD5LR08HljYAVKvX6S4xp8SFWzNZ4jOrw8SD6D0NNSzsut0j3Ht4wwu5g/WP9lsFEUBdXU7mp0lQs9lZU7Sl0VP/JBtbaCfcpn3K1hvuh3GWHl0h7R5VraopamhmMdRDLBI39V7S0hdBKjU0dNWN3Kmnimb2SMDvapKy1qpQiqdRbyX1Ii/2fp3E3UpPdb+hoh93uMkPQvr6p0X1DK4j1ZS3Wmuu04hoqaSZ5P6o4DvPILdI0vYwci1UefNBZGGnhpmCOCJkTB+qxoA/Bdc9fhGOKVPj/Ow4qezNSUs1qmV8v3I9o3R8WnIHSzFstbKMPeOTB9UKSIir1atOtN1Kjy2Wm3t6dCmqVNYSNDbfNiFTqGok1VpqDpa4t/3ykbzmwOD2drscx19/PmmSKqt1UWSMmpqmF3FrgWPY4fiCv0PWIvGj9O6geH3ayW6ueOT54Gud6yMqx6ZtLO2pqjWjvRXLt7vmc1exU5b0XhnEMmtNYXiBtrffrzWRSeIKf3RI/f8mM8e5ZzUOyW7aS0HDqW+NdS1NVVMhho3DxmsLXEuf2HgMD1rsKz6O07p95ktNjt1C883wQNa71gZWSqaSnrGCOpginYDkNkYHDPbgrfU2pUZJUKe7HOX2v8AT7mEdPynvyyzg/Z59O9Pf6jT/wBQLvVWbLLa4ntfHbqNj2nIc2FoIPbyV4onWNVWoTjNR3cLtydFtb9Cms5yaw20bGodo9Iyvt746a90zN2N7+DZ2cTuO7PIerK5Q1HpK+6TrHUl7tlTRSA4BkYd1/la7kR3Fd/KhW0FJcYHU9bSwVMLucczA9p9BXRpe0Nazj0UlvR+67mYXFlGq95cGcCU+qb9SU3uWnvdyhp8Y6KOpe1mO4HCt6C3XC9VjaahpaitqpTwjiYXvcfQu4X7K9DSPL3aTsxcTn5M0fks1adP2ixRdFarZR0LOynhazPqCl5bWUYpulS4vuXkcy06T/FI03sQ2CP0zPFqTVEbHXJo3qakzkU5+s7qLuwdXfy3miKpXt7Vu6rq1nx8u4kqVKNOO7E1rtp2RRbSLWypojHBe6NpEEjuDZW8+jcfxB6j3rka/abu+mK59DeLfUUVQw43ZWEA+UHkR5Qv0DVrcLVQXaEwXCipqyI/qTxNe31EKW0raCrZR6Ka3ofddxzXFnGq95PDOB4NUX2mpfccF6uUVNjHQsqXhmO4HCoWy1XG+VjKS3UdRW1MhwI4WF7ifQu3zsp0IX750nZ88vkzf7LO2uxWqyRdFa7dR0MfW2nhawH1BS89rKUU+ipcX3LyOZadJv3pGsNhGxuTQNNJeb0GG9VbNwRtORTR8y3PW49fdhbTudtpbvb6m31sTZqapjdFLG7k5pGCrlFUbq8q3NZ16j95/buJKnSjCO5HkcZbUNid90FXTVFNTzV9lc4mKqjbvGNvZIByI7eR/BQ6watv+lpHyWS71lvc/wCMIZC0O7xyK7+IDgQQCDzBUeuGzvSF0mM1bpq0zyu5vdSsyfThWa22p/p9Hd09759vemcM9P8Ae3qbwcQ6g1bftVTMlvd2q7g9nBnTSEhvcOQ9Cn2yTYbdtbV8NfdqaahsUbg575Glr6kfVYD1H63JdQ23Z5pG0Siag01aaeVvJ7aZm8PThSAAAYHALG62o/pdFaQ3fn2dyQp2Hvb1R5KdNTQ0dPFTU8bYoYmBjGNGA1oGAAua/C4+e9Pfu0384XTCoVNvo60tdVUlPOW8AZYw7HrUDpl77Hcqu1nGfujsr0ukg4ZwcQ7Hv+J+mv35i7lVpFZ7bBI2SK30cb2nLXNhaCD5DhXa36xqav6saiju4WOeTC2odDFxzkgO3n/hPqDzcf8AVauKF+iU0EVRG6KaNksbubHtBB9BVp7xWn/0uh/+Bn9l2aPrqsKTpOG9l5546l8jXc2jrS3s4MVs3+gGnP8ATqf+QLAbd9H1estn1VS2+Ez1tLIyqhjbzfu5BA8u6StgxxsiY2ONjWMaMNa0YAHYAvVDU7qVO4VxDmnn7nS6acNxn52yxSQSOilY6ORh3XMcMFp7CFlLXqG5wVtvDrhWSQ0s8b2QmZxa3dcCMDOAu4rxobTF/l6a62C21kp5ySwNLj6cZXls0HpWzTdNbtO2qllHEPjpmBw7jhW+W1lGUMSpPPesfzwI1adJPhIyNwt9HfrVPQ1sImpKyExyRn9ZrguPNp+xS/aDrpp6emmr7M5xMVVE0uMbeyQD4pHbyK7PQgOBBAIPMFVvS9Wq2E24cYvmv51ndXto1lx5nAOn9XX/AErI+SyXest5f8cQyENd3jkV5f8AVl+1VOya93WruD2fE6aQkN7hyHoXb1fs70fdJjNW6ZtE8rub3UrMn04Xtt2e6RtEwmoNN2mnlHJ7KZm8PThWL/dNtnpOh9/t4efM4v8AT6n4d7gcv7I9hl31pcILhd6WahsUbg975Wlr6kfVYD1HrcuvaeCKlgjp4GNjiiaGMY0YDWgYAC+wABgcAirep6pVv6m9U4Jcl2HdQt40VhBERRhvIGq1F8rh8432qiq1F8rh8432raaybLUe036Tu8wz81txaj2m/Sd3mGfmpXQvifB+hB7S/B+K9Sw0NII9VW8k4BeW+tpC3WtA2ysNvuNNVjnDK1/qK35FKyeJksbg5j2hzSOsFb9oKbVWE+1Y+n+Tm2WqJ0Z0+tPP1X7H0iIq8WkKIbUZQzTrIzzfUNA9AJUvWtNq10bLVUttY7JhBkk8hPIer2qR0qm53UMdXH6EVrVVU7Keevh9SBLcuz2Mx6Uo8/rF7h94rTbWl7g1oyScALfdlove600lJ1xRNae/HH8VN7QVEqUYdr8v8ld2XpN151OpLH1f7HDW0qkNDtA1FTuzltwnPHsLyR7VIPB9qBT7WLJl26JDLH35icsj4Smn3WfaVUVjWEQ3OFlS09RcBuuHrbn0rX+lL4/TepbZeWAk0VTHMQOsB3EekZVsp/8AL05KP90MeOMeZLP+nX49TP0ARUaGsguNHBWU0gkgnjbLG8cnNIyCqy+UNY4MsIREXgNK+FdI1ug7cwnxnXFuPRG9cqLfvhYaljqbraNOwvDjSRuqZgDyc/g0Hy4BPpWgl9Q2bpOnYR3uvL+5A3sk6zwfoDpP6LWb9xg/phY7Uvy5nmx7SsjpP6LWb9xg/phY7Uvy5nmx7Svmk/zJd5Nr8JiFLLB82R97vaompZYPmyPvd7VjLkImQREWBmERYt2oqNji0tlyDj4o/ugMois6G6wXB7mxB4LRk7wV4gCL4mmjgZvyvDG5xkr7QBERAEVKpqGUsD5n8mjl2nsXzRTzVEIkmhEWeTc5OPKgK6IiAIiIAix1RfaWmmfC9sm8w4OBw9quaO4U9c0mF+SObTwITAyXCK1jri+vkpOhcAxud/qKukAREQBERAERWj64tuDKToXEObnf6ggLtERAEREARW1wrDRU/SiIyHIGAq7JA6JsjgWgt3iD1ID6RWdFXSVskhbDuwNOGvJ4u9CvEAREQBERAEVpW3WmoCGyEueeO63iV8UN4gr5DHG2RrwM4cOpMDJfIiIAiL4E8RmMAeOkA3i3rwgPtFZzV7oq+KlELnB4zv8AYqtbVtoqd0rhk8mt+sexAV0VGklmmhEk0QiceTc5OPKqyAIiIAisqu4mmrYKYRhwl/Wzy4q9QBEVCtrI6GHppA4tyB4vNAV0WNg1BRzyBnjsJOAXDgqlRcjBcIaTow4SY8bPLn/Ze4PMl8iIvD0IviKeKfe6J4dundOOor7QBF8yPbHG57vitBJWNobzLWztY2kcIiSN/PL8EBlEREAREQBERAEREAREQEDVai+Vw+cb7VRVai+Vw+cb7VtNZNlqPab9J3eYZ+a24tR7TfpO7zDPzUroXxPg/Qg9pfg/FepE1sPQGtYoImWi5ShgbwglceAH1SfYofpu2R3i809BK4tbNvN3hzB3SQfWvm92KtsNY6mq4yPqPHxXjtBVju6dG5zbVHxxlfsVKxq3Fpi7pL3c4f6M3uCHAEEEHrCLRtu1XerUwR0tfK2McmOw5o7geSu6jXuoqhhYbg5gPXGxrT6wFAS2fr72FJY8Szx2ot93MoPPh+pszU2q6LTtM4ve2SqcPg4QeJPaewLTNdWz3Grlq6l+/LK7ecVTllknkdJK90j3HJc45JWZ01pKu1FOOjaYqVp8edw4DyDtKmbS0o6fTc5vj1v0RAXt9X1OqqcI8Oper/nAv9nmnnXa7tq5Wf7tSEPJI4Of1D81t1WlqtdLZ6KOjpI9yJg9JPWT5VdqraheO6q7/UuRc9LsFZ0Nz+58X3mrfCD2fSa00f7soITJc7UTPE1o8aSPHjsHlwAR3eVceEYODzX6KrnTbbsAnlqajUukaYSCTMlVb2Dxt7mXxjr8rfV2Kx7N6zCivZa7wup+gvrZy/qQ8S02A7bqaz00OktS1HRUzTiirHnxYwf+7eeoZ5Hq5LpWORkrGyRva9jhlrmnII7QV+dskb4ZHRyMcx7ThzXDBB8oUo0ztS1jpGIQWi+1UNOOUDyJIx3NdkD0KQ1XZpXM3Wt5JN80+XeaLe+cFuzWTutQ7aRtQsuzq0vqKyZk1e9p9zUTHePI7qJHU3tK5frvCB2jV0JhdfzC1wwTBBGx3rAyFBKmqrrxWmapmqK2rmdxfI4ve8954lcNnsnNT3rqS3V1Lr8eGDdU1FYxTXEuNRX+u1Peqy8XKXpaqrkMjz1DsA7ABgDuWOWxdS7JazR2zim1FemvhuNbWMijpTzhiLHnxv8AMSBw6gtdK5WtalVh/Q/CuHy4dhGVIyi/e5n6A6T+i1m/cYP6YWO1L8uZ5se0rI6T+i1m/cYP6YWO1L8uZ5se0r4/P8yXeWNfhMQpZYPmyPvd7VE1LLB82R97vasZchEyCIiwMwsNqOKNlNEWsa0mTiQPIVmViNS/JYvOfkV6jx8irdXmjt/S0+In5aMtAXlxqpobTHNHIWyEMy7vC9vcbpLW7dBJbuuOOxYusuTau2R08cb8xhu+ccBjgiPCte3TvpaVxkHRuDcjrLsc1dyTVVst8klRM2aQkBhxyVC8tcbXSPAJDd3Pk4L7rZm3e2SGna/MTgSCOa9BQfNdKKKOtlnEkbyMsPUCrm6XGeGSkdTkkSjO79bPL2qyqrkK+hhooonmbLQRjhwVxcojFU2yPnuYb+IQH3Ma+jts8tRNmUuaW447oyrreqZ7XC+KdscrmtLnu/FeX75sl72+1Yy4lwt9v3t7oN0b+P8ArvRAr09VU0txip5KttUyXgSDnC+amrqai5S0zasUrWcG54ZVBhp33SkfSQuZDvAbxHxiq92qLfO+ZkrJGVEeQ1wHNAZijZMyna2okEknW4KssTQVvuG1RSVW+cu3WjHHHUssDkA9qxPUYWjY19+rA5ocN3kRnsXxURtob7AYQGNlxvNHLjwVL3cygvVVJI1zgfF8X0KtSCa63NtY6MxwxDxc9ayPC5gqpnXuaAyExNbkN7OSs6ee5V8tRBFUBgY4nePPnwCr030iqP2PyC8sHymu/b/MoEVrHWT1MU0c7t58Tsb3/XcrOrdX0rHTuuMbnNP+GCPYvLf0gp7n0Wd/PDHPrVk00rrc5jYXvq+bnY+KM8/UgMrcrjOy3UtTE7cc8guA6+HJW1TU3OhfFPJMHiX9TqHkS4/MtD3j2FV9Qf4dJ+3/AGRA+HT3Ghraf3ROJGzEAtHIK5lqpm32OnEh6ItyW+gqne/ldB+3+YXk30ki/Y/IoClcnXKiBkNYMPdhjAOPsV85labdGPdDYp+Be93YsU+5QzXQz1IeYouEbQM8e1VbxVNqmUk2H+5XE7w9KAqUlXU01yjppKptTHIOYOcFfVRU1tfcJKWkl6FkXN3arWI077tSvpYTHDnAJHxj1qr7o96bvUPnY4xy8QQPLlAV66StobWDJPmbpMbw7F9XGvnjhpYID8NOB4xVG7Vba609Mxrmt6UAZ5nmlzY+IUFYGFzYmt3sehED6hnrbdXRU9VKJo5uAPYV5PVV0t1mo6eUNBAwSPijCpvqReLlTdAxwZEd5xcPL/8Air0/0jn/AGPyCA9tVTVNrpqKqk6QsGQ7/rvV1eHzxUTpad5Y5hBOOsK0pvpFUfsfkFlpYxLG6N3EOBBXh6jE11zk97KeSF5EsxAyPx/FZaFrmxMD3bzgBknrKjVtgkluMVNJ8Wmc52PT/fCk6MIwFtZHUVtZWVA3xESQDxxz/ILIUdzoaqo3IGkSEc9zHBY4SmzXCcTRufBNxyAvLdLFUXsywRlkRaQBjGOC9weI9dW1NfUzdHWMpo4zhoJxvL7Zd6h1olkyDNG8MLsdR61aMipaKrniuEL3DOWOGVkIKiggoJZY6Z/QOeGOaeOfKgR5axWTPjmFe2WMjx2HmPIrOKKumus7GVDWzgeM/qI4cPYvKToffaE28ydGfjg9Q6/QqzqttuvdRLM1268cMDu/sgLmeqqI7zTU/SncLRvDqJ4qnUVFZcbhJTUsoiZDzPaV5Uu6S/UjwDhzGn2qmJ/ee7VD5mOMcuSCO/KAuLdX1DmVVNUOzNC0kO7laU090raWSVlRuthzk8i7rVW2tfUPr60tLWPY4Nz1r7sfzTU97v5UBe2WsfWUW/Kcva4tJ7VQvVbPE+Gmpnbskp5jnzwF5pr5C/zh9gVK+h0FXS1gaXNYcH0HK86z3qLaSOriulGyrkEjg4brh2ZVzW1s9RcHUsNS2mZGOLycZKoT1ra+6UcsbHtYHBoLhzOeK+a2GGlu0j6yJz4JOII7V6eGQs1bNNJNTTyCV0XJ46wvdRfN38YSzmhe+V1HC9mAAXOzxTUXzd/GF51nvUYqvnpKilpoadgM4ABLW46uXl4q7rAW3uiB5hrQfWVkLfQ00UEUrIWCQsBLscc4VlcPn6k7m+0r08Li4x1bp8x1zKeLHAE4OVb2ytq6qlqYelaZo/iyHs/6CtJXwMu1Qbgx8jeO4B+H4Kvp9hEtY3cLOAw09XNOoHxYYat56SOcNhEnjsP6yurgys6eRzbhHDGBljCcFWtir46XepJGP6R8mBw5dXFW0L4G1FT7uifLOSQxvaUBfRVdVX2aY77Q9hIc4j4zce1UrK6empJKoyA07A74Ptcvu0gttFaCMEb3D+FfdrgdUWKaJvxnF2O/ggRQbNdZaV1wbUAMBJ3PJ3K4rbpK61QVUTix7ngOx6cqzjuYhtb6F0bxNxaOHaV91tO+msVOx4IcZN4jszlAXcDrj0NRVzv3WOiLmMB+KergrNlRdKihdVNqN1kXA9Rcs1U/NcnmT7Fi6H6O1H8S8QKTqm5zUXu4ThkbMDdHAnqyso2aoq7UyWKRsUrgMuPLnxWPZ9GXd/8A/pUavfFko8Z6PJ3sd5wvQVWVdVRVsDH1jalkhAIBzjjhSBRaQ0r6qkNHC5kYe0FxHxjkKUrxnqCIi8PSBqtRfK4fON9qoqtRfK4fON9q2msmywd30Zab5WGrrY5XSloblshAwFnEXlOrOk96m8M8rUKdaO7UimvmR+26FstqrYq2limE0RJaXSEjljksxX26kudO6nrIGTRHqcOXd2K4Rezr1JyU5Sba6zGnbUacHThFJPqwQmu2VW2ZxdSVc9Nn9VwDwPzVkzZI3eG/dju+SHj7VsNF2R1W7isKfkcMtEspPLp+a9SKWzZtZKFwfM2WseP/ADT4vqH5qUxRRwxtjiY1jGjAa0YAC9c4MBc4gAcyViq3UMEGWU46Z/b+qP7rlq16tZ5qSbO2ha0bdYpRSMq57WNLnODQOZJWMqNRUsMgYwOlGeLm8h/dYCrr6itdmaQkdTRwA9CtlrUe03bxNaWup6xu9DIHdo6x6FXUFY90bg5ji1w5EHCzFFqOWPDKpvSN+sOf/wCrxxCkWWsNkukNbuMt2tTBVH/xVOejl9JHP05WsLl4JFskkLrbqWrgYTwZPTtkIHeC32LfFNWQVbN6GQO7R1hVl322rXlut2lUaXZz8zVO3pz4yRz7Q+CPRMlzXapqJY/qw0oYT6S4+xbM0Vsb0foaRtRbrd01a3lV1R6SQd3U30AKbIvbjV7y4ju1aja7OXkIW1KDzFGA1poay69tkdtvkUstNHKJmiOQsO8ARzHkJUL/AOzRs7+w13/NvW00Wijf3NGO5SqNLsTM5UYSeZLJRoqSK30cFHACIaeNsTATkhrRgce4LAal+XM82PaVJVGtS/LmebHtK5k8vLM3yMQpZYPmyPvd7VE1LLB82R97vavZcjGJkERFgZhC0O5gHvREAXyI2NBDWNAPPA5r6RAC0EbpAI7F41jWDDWho7AML1EB8iNjXFwY0E8yBxK+i0HmAcIiAEAjBAIXhY1zd0tBb2EcF6iA8DGgABoAHLhyXjoo3HLmNJ7SF9IgLasoW1jod55DY3b27j4yuURAeFjScloPoXvJEQDdGc4Ge1A0DkAERAA0DkAMr5EbG5wxozzwOa+kQHm60jGBgeReloPMAoiAFoPMA4TdGc4Ge1EQHnRs+q31IWMc3dLWlvYRwXqIDwMaMYaBjlw5I9jHjD2tcPKMr1EB5utxjdGOzC9wMYxwREB4xjGDDGtaPIML3dGc4Ge1EQDdGc4Ge1W9dNPBAX08XSvyBuq4RAY2z0U0JmqakYmmOcdgWSREB45jXjDmhw7CMo1jWDDWtaPIML1EB8vjZJ8djXY7Rle7jd3d3Ru9mOC9RAfLImR/EY1vcMI6JjyC5jXEcsjK+kQHm63OcDPbhHxskGHta4dhGV6iAAADAAA7F4GgDAAAXqIAGhvIAdy8c0OBDgCD1FeogPAxoAAa0AcsDkjmNeMPaHDsIyvUQHjWNYMNaGjsAwvSARggHvREA5cl5ugnOBntXqID5dGxzg5zGkjkSOIX0AASQBkoiA+eij39/cbvfWxxTo2F+/uN3vrY4r6RAeboAIwOK9ADRgADuREB8mKMu3yxpd244r6LQ7mAe9EQDAxjqXm6AMYGOxeogPN1uMYGOzCFjS3dLQW9mOC9RAeCNjQAGtAHIAcl6iIAiIgIGq1F8rh8432qiq1F8rh8432raaybIiLUbAiEhoySAB1lYut1BT0+WQ/DPHZ8UelEsgyjnBoJcQAOZKxVbqGCDLIB0z+39ULBVlxqa0/CyHd6mjgArVZqPaY7xc1dxqa05lkJHU0cAFbIsjRWSpq8OI6KP6zuZ7gsuRjzMfz5K9hstbPEZGxYHUHHBKkNFaKWiwWs35Pru4lXqxcjJRINJE+JxZIxzHDqIwvhTapo4Ktm5NGHDt6x6Vg63TkkeX0rukb9Q816pHmDDxyPicHxuc1w6wcLM0Wo3swyqbvj67efqWGfG+Jxa9pa4cwRhfK9xkZwTenqoatm/DI148nMKqoNFLJA8Pje5jh1grNUWpHNwyrZvD67efpCwcT1Mz6KnBUw1LN+GRrx5OpVFiZBRrUvy5nmx7SpKo1qX5czzY9pWUeZ4+RiFLLB82R97vaompZYPmyPvd7V7LkYxMgiIsDMIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgIGq1F8rh8432qivuGTopWSAZ3XB2O5bTWTkkAZJwFjK2/wBPTZZF8M8dnIelYGsulTWkiSTDPqN4BWixUe0yci7rLnU1p+FkIb9RvAK0RX1FZ6qsw4N6OP6zvyWXIxLFZCistVWYdu9HH9Z35BZ2istLR4cW9LJ9Z35BX6xcjJRLGis1LR4cG9JJ9Z35K+RFgZBERAEREBRqqKCsbuzRh3YeselYKt07LFl9M7pG/VPxh/dSNF6ng8wQV7HRuLXtLXDmCML5U1qqGnrG7s0Ycep3WPSsFW6dmhy+nPSs+qfjD+6zUjFoxcM8lO8Pie5jh1grNUWpMYZVsz/naPaFgnNcxxa4FpHMFeL1rIyTmGeKoYHxPa9vaCo7qX5czzY9pWMgqJaZ+/DI5jvIqlbWyV0jZJQ3ea3dyOtYqOGe54FupZYPmyPvd7VE1LLB82R97vakuR5EyCIiwMwiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAgaIryitVVW4LGbrPru4BbTWWavaK0VVbhzWbjPru4BZ2isVNS4c8dNJ2u5D0LJcli5GSiY+isdLSYc4dLIP1nch3BZBEWBkEREAREQBERAEREAREQBERAW9Xb6etbiaME9ThwI9KwVbp6eDL6c9Mzs/WH91JUXqeDzBBHNLSWuBBHMFeKZ1dupq0fCxje6nDgQsFW6fngy+A9MzsHxgs1IxaMSpZYPmyPvd7VFCC0kEEEcwVK7B82R97vavJcj2JkERFgZBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREBjKKwU1Nh0vwz/83IehZMAAYHAIiZAREQBERAEREAREQBERAEREAREQBERAEREAREQFrWW2mrR8LH431m8CvqgpBRUwgDt4NJwfSrhEAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREB//Z";
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function hoy(){return new Date().toISOString().slice(0,10)}
+var SEED={
+ centros:[
+  {id:'c1',nombre:'Academia FormaVigo',nif:'B36345678',responsable:'Lucía Pérez',tel:'986 111 222',mail:'info@formavigo.es',direccion:'Rúa do Porto 12, Vigo',cuenta:'ES12 2080 0000 0000 0000 0001',lopd:'Firmado',contrato:'Activo',plan:'completo'},
+  {id:'c2',nombre:'Centro EducaOnline',nif:'B28098765',responsable:'Marco Ruiz',tel:'910 333 444',mail:'hola@educaonline.es',direccion:'Calle Mayor 8, Madrid',cuenta:'ES34 0049 0000 0000 0000 0002',lopd:'Pendiente de firma',contrato:'Activo',plan:'basico'},
+  {id:'c3',nombre:'Formación Norte',nif:'B15011223',responsable:'Ana Souto',tel:'981 555 666',mail:'contacto@formacionnorte.es',direccion:'Av. de la Marina 3, A Coruña',cuenta:'ES56 2100 0000 0000 0000 0003',lopd:'Firmado',contrato:'Activo',plan:'basico'}
+ ],
+ docentes:[
+  {id:'d1',codigo:'D-104',nombre:'Marta Fernández',dni:'36011223X',tel:'612 345 678',mail:'marta.fernandez@mail.es',familia:'Idiomas',esp:'Inglés para negocios (B2-C1)',lugar:'Vigo',modalidad:'Online',precio:35,exp:8,dispo:'Lun a vie · 9:00–13:00',tipo:'Autónoma',titulo:'Lic. Filología Inglesa + CAP',bio:'8 años impartiendo inglés online para empresas, con material propio y clases en directo.',val:4.8,verif:true,disp:{dias:['L','M','X','J','V'],desde:9,hasta:13},llamamiento:true,fav:['o1','o5']},
+  {id:'d2',codigo:'D-087',nombre:'Javier López',dni:'36123456Y',tel:'634 987 210',mail:'javier.lopez@mail.es',familia:'Tecnología',esp:'Programación Python y datos',lugar:'Online (toda España)',modalidad:'Online',precio:45,exp:6,dispo:'Lun a vie · 16:00–19:00',tipo:'Autónomo',titulo:'Grado Ing. Informática',bio:'Cursos prácticos con proyectos reales; experiencia en bootcamps online.',val:4.9,verif:true,disp:{dias:['L','M','X','J','V'],desde:16,hasta:19},llamamiento:true,fav:[]},
+  {id:'d3',codigo:'D-121',nombre:'Lucía Méndez',dni:'77098765Z',tel:'655 112 233',mail:'lucia.mendez@mail.es',familia:'Marketing digital',esp:'Redes sociales y publicidad online',lugar:'Pontevedra',modalidad:'Híbrida',precio:38,exp:5,dispo:'Lun, mié y vie · 10:00–14:00',tipo:'Autónoma',titulo:'Grado Marketing + Máster Digital',bio:'Especialista en campañas para pymes; casos reales en cada módulo.',val:4.7,verif:true,disp:{dias:['L','X','V'],desde:10,hasta:14},llamamiento:true,fav:[]},
+  {id:'d4',codigo:'D-099',nombre:'Carlos Vega',dni:'36099887W',tel:'678 445 566',mail:'carlos.vega@mail.es',familia:'Sanidad',esp:'Primeros auxilios y soporte vital',lugar:'Madrid',modalidad:'Presencial',precio:50,exp:12,dispo:'Fines de semana · 10:00–14:00',tipo:'Cuenta ajena (colaborador)',titulo:'Técnico en Emergencias Sanitarias',bio:'Formador homologado, con prácticas presenciales en grupos reducidos.',val:5.0,verif:false,disp:{dias:['S','D'],desde:10,hasta:14},llamamiento:true,fav:[]},
+  {id:'d5',codigo:'D-133',nombre:'Sara Núñez',dni:'36112233A',tel:'699 778 899',mail:'sara.nunez@mail.es',familia:'Diseño',esp:'Diseño gráfico con Canva y Figma',lugar:'Online (toda España)',modalidad:'Online',precio:32,exp:4,dispo:'Lun a vie · 16:00–19:00',tipo:'Autónoma',titulo:'Grado Diseño Gráfico',bio:'Cursos visuales y muy prácticos, pensados para no diseñadores.',val:4.6,verif:true,disp:{dias:['L','M','X','J','V'],desde:16,hasta:19},llamamiento:true,fav:[]},
+  {id:'d6',codigo:'D-110',nombre:'Pablo Ríos',dni:'36055667B',tel:'633 221 100',mail:'pablo.rios@mail.es',familia:'Empresa',esp:'Contabilidad y gestión para autónomos',lugar:'A Coruña',modalidad:'Online',precio:40,exp:10,dispo:'Lun a vie · 9:00–13:00',tipo:'Autónomo',titulo:'Grado ADE',bio:'Explica la gestión sin jerga, con plantillas que el alumno se lleva puestas.',val:4.8,verif:true,disp:{dias:['L','M','X','J','V'],desde:9,hasta:13},llamamiento:false,fav:[]},
+  {id:'d7',codigo:'D-142',nombre:'Elena Torres',dni:'36223344C',tel:'611 223 344',mail:'elena.torres@mail.es',familia:'Hostelería y Turismo',esp:'Gestión hotelera y atención al cliente',lugar:'Vigo',modalidad:'Híbrida',precio:36,exp:9,dispo:'Lun a vie · 9:00–13:00',tipo:'Autónoma',titulo:'Grado Turismo + Máster Dirección Hotelera',bio:'9 años formando equipos de recepción y sala en hoteles y restaurantes de Galicia.',val:4.9,verif:true,disp:{dias:['L','M','X','J','V'],desde:9,hasta:13},llamamiento:true,fav:[]},
+  {id:'d8',codigo:'D-156',nombre:'Raúl Díaz',dni:'36334455D',tel:'622 334 455',mail:'raul.diaz@mail.es',familia:'Energías Renovables',esp:'Instalación de placas solares y aerotermia',lugar:'Pontevedra',modalidad:'Presencial',precio:48,exp:7,dispo:'Lun, mié y vie · 10:00–14:00',tipo:'Autónomo',titulo:'Técnico Superior en Energías Renovables',bio:'Instalador certificado; forma a técnicos en fotovoltaica y aerotermia con prácticas reales.',val:4.8,verif:true,disp:{dias:['L','X','V'],desde:10,hasta:14},llamamiento:true,fav:[]}
+ ],
+ ofertas:[
+  {id:'o1',centroId:'c1',titulo:'Inglés B2 para atención al cliente',familia:'Idiomas',modalidad:'Online',lugar:'Online',horas:40,precio:35,inicio:'2026-11-24',desc:'Curso en directo, 2 sesiones semanales, grupos de máximo 12 alumnos.',postulantes:['d1'],estado:'Abierta'},
+  {id:'o2',centroId:'c2',titulo:'Python desde cero para adultos',familia:'Tecnología',modalidad:'Online',lugar:'Online',horas:60,precio:45,inicio:'2026-12-01',desc:'Bootcamp online con proyecto final y tutorías en directo.',postulantes:['d2'],estado:'Abierta'},
+  {id:'o3',centroId:'c1',titulo:'Marketing en redes para comercios',familia:'Marketing digital',modalidad:'Híbrida',lugar:'Vigo',horas:30,precio:38,inicio:'2026-11-30',desc:'Sesiones presenciales en Vigo + trabajo online tutorizado.',postulantes:[],estado:'Abierta'},
+  {id:'o4',centroId:'c3',titulo:'Primeros auxilios en el trabajo',familia:'Sanidad',modalidad:'Presencial',lugar:'Madrid',horas:20,precio:50,inicio:'2026-12-08',desc:'Formación presencial obligatoria para empresas, con prácticas.',postulantes:['d4'],estado:'Abierta'},
+  {id:'o5',centroId:'c2',titulo:'Diseño gráfico para redes sociales',familia:'Diseño',modalidad:'Online',lugar:'Online',horas:25,precio:32,inicio:'2026-12-05',desc:'Curso grabado + 4 clases en directo de repaso y dudas.',postulantes:[],estado:'Cerrada'},
+  {id:'o6',centroId:'c1',titulo:'Atención al cliente en hostelería',familia:'Hostelería y Turismo',modalidad:'Híbrida',lugar:'Vigo',horas:25,precio:36,inicio:'2026-12-10',desc:'Curso práctico de atención al cliente para equipos de sala y recepción.',postulantes:['d7'],estado:'Abierta'},
+  {id:'o7',centroId:'c3',titulo:'Instalación de placas solares',familia:'Energías Renovables',modalidad:'Presencial',lugar:'Pontevedra',horas:35,precio:48,inicio:'2026-12-15',desc:'Formación técnica con prácticas de montaje en cubierta real.',postulantes:['d8'],estado:'Abierta'}
+ ],
+ contrataciones:[
+  {id:'k1',ofertaId:'o1',centroId:'c1',docenteId:'d1',estado:'Contratado',fecha:'2026-10-20',seguimiento:[{fecha:'2026-10-27',texto:'Módulo 1 completado: presentaciones y teléfono. Asistencia 11/12.'},{fecha:'2026-11-03',texto:'Módulo 2 en curso: emails y reuniones. Buen nivel del grupo.'}],valCentro:5},
+  {id:'k2',ofertaId:'o2',centroId:'c2',docenteId:'d2',estado:'En negociación',fecha:'2026-11-04',seguimiento:[],valCentro:null}
+ ],
+ conversaciones:[
+  {id:'m1',centroId:'c1',docenteId:'d1',ofertaId:'o1',msgs:[{de:'centro',texto:'Hola Marta, nos interesa tu perfil para el curso de inglés B2. ¿Disponibilidad a partir del 24 de noviembre?',fecha:'2026-11-03'},{de:'docente',texto:'Hola, sí, tengo mañanas libres. Puedo enviaros mi CV completo y una clase de muestra.',fecha:'2026-11-03'}]},
+  {id:'m2',centroId:'c2',docenteId:'d2',ofertaId:'o2',msgs:[{de:'centro',texto:'Hola Javier, ¿podrías ajustar el precio a 42 €/hora para un grupo de 20?',fecha:'2026-11-04'}]},
+  {id:'m3',admin:true,centroId:null,docenteId:'d1',ofertaId:null,msgs:[{de:'docente',texto:'Hola, ¿podríais revisar mi documentación? Subí el CV actualizado y el título de inglés.',fecha:'2026-11-04'},{de:'admin',texto:'Hola Marta, lo revisamos hoy mismo y te confirmamos por aquí.',fecha:'2026-11-04'}]},
+  {id:'m4',admin:true,centroId:'c1',docenteId:null,ofertaId:null,msgs:[{de:'centro',texto:'Hola, ¿nos podéis ayudar con la factura de noviembre? No nos cuadra el importe del plan.',fecha:'2026-11-05'}]}
+ ],
+ facturas:[
+  {id:'f1',tipo:'Docente a centro',centroId:'c1',docenteId:'d1',concepto:'Curso Inglés B2 — octubre (20 h)',importe:700,fecha:'2026-10-31',estado:'Pagada'},
+  {id:'f2',tipo:'Suscripción BUSCODOCENTE',centroId:'c1',docenteId:null,concepto:'Plan Completo — noviembre',importe:99,fecha:'2026-11-01',estado:'Pagada'},
+  {id:'f3',tipo:'Suscripción BUSCODOCENTE',centroId:'c2',docenteId:null,concepto:'Plan Básico — noviembre',importe:49,fecha:'2026-11-01',estado:'Pendiente'}
+ ]
+};
+var S;
+try{S=JSON.parse(localStorage.getItem('buscodocente_v8'))||null}catch(e){S=null}
+if(!S||!S.docentes){S=JSON.parse(JSON.stringify(SEED))}
+function save(){try{localStorage.setItem('buscodocente_v8',JSON.stringify(S))}catch(e){}}
+function resetDemo(){localStorage.removeItem('buscodocente_v8');location.reload()}
+var rol='centro', tab='panel', centroId='c1', docenteId='d1', convId='m1', filtro={fam:'',mod:'',lug:'',max:'',text:''};
+function centro(){return S.centros.find(function(c){return c.id===centroId})||S.centros[0]}
+function docente(){return S.docentes.find(function(d){return d.id===docenteId})||S.docentes[0]}
+function nombreCentro(id){var c=S.centros.find(function(x){return x.id===id});return c?c.nombre:'Centro'}
+function nombreDocente(id){var d=S.docentes.find(function(x){return x.id===id});return d?d.nombre:d.codigo}
+function oferta(id){return S.ofertas.find(function(x){return x.id===id})}
+function planPrecio(p){return p==='completo'?99:49}
+function planNombre(p){return p==='completo'?'Completo (99 €/mes)':'Básico (49 €/mes)'}
+</script>
+<script>
+function tabsPorRol(){
+ if(rol==='centro') return [['panel','Panel'],['ofertas','Mis ofertas'],['seleccion','Selección docente'],['calendario','Calendario'],['contratacion','Contratación'],['seguimiento','Seguimiento'],['facturacion','Facturación'],['mensajeria','Mensajería'],['perfil','Mi perfil'],['suscripcion','Suscripción']];
+ if(rol==='docente') return [['tablon','Tablón de ofertas'],['postulaciones','Mis postulaciones'],['favoritos','Favoritos'],['calendario','Calendario'],['panel','Panel'],['contratacion','Contratación'],['seguimiento','Seguimiento'],['facturacion','Facturación'],['mensajeria','Mensajería'],['perfil','Mi perfil']];
+ return [['panel','Panel'],['centros','Centros'],['docentes','Docentes'],['ofertas','Ofertas'],['contrataciones','Contrataciones'],['suscripciones','Suscripciones'],['calendario','Calendario'],['mensajeria','Mensajería']];
+}
+/* ===== v8: sesión, login, sidebar, gráficas ===== */
+var loginRol='centro';
+var session=null; try{session=JSON.parse(localStorage.getItem('buscodocente_session_v8'))}catch(e){}
+if(session){rol=session.rol; if(session.centroId) centroId=session.centroId; if(session.docenteId) docenteId=session.docenteId; tab=rol==='docente'?'tablon':'panel';}
+function toast(m){var t=document.getElementById('toast'); if(!t) return; t.textContent=m; t.style.display='block'; setTimeout(function(){t.style.display='none'},2600)}
+function barChart(rows,color){var max=Math.max.apply(null,rows.map(function(r){return r[1]}).concat([1]));return rows.map(function(r){return '<div class="bar-row"><span class="bl">'+esc(r[0])+'</span><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(r[1]/max*100)+'%;background:'+(color||'#2563eb')+'"></div></div><span class="bv">'+r[1]+'</span></div>'}).join('')}
+function donut(parts){var total=parts.reduce(function(a,p){return a+p[1]},0)||1;var r=54,c=2*Math.PI*r,off=0;var segs=parts.map(function(p){var len=p[1]/total*c;var s='<circle cx="70" cy="70" r="'+r+'" fill="none" stroke="'+p[2]+'" stroke-width="22" stroke-dasharray="'+len.toFixed(1)+' '+c.toFixed(1)+'" stroke-dashoffset="'+(-off).toFixed(1)+'"/>';off+=len;return s}).join('');return '<div class="donut-wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="'+r+'" fill="none" stroke="#f1f5f9" stroke-width="22"/>'+segs+'<text x="70" y="66" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">'+total+'</text><text x="70" y="84" text-anchor="middle" font-size="11" fill="#64748b">total</text></svg><div class="legend">'+parts.map(function(p){return '<div><span style="color:'+p[2]+'">●</span> '+esc(p[0])+': <b>'+p[1]+'</b></div>'}).join('')+'</div></div>'}
+function unreadCount(){return misChats().filter(chatNoLeido).length}
+function loginAccounts(){if(loginRol==='centro') return S.centros.map(function(c){return {id:c.id,label:c.nombre+' — '+c.mail}});if(loginRol==='docente') return S.docentes.map(function(d){return {id:d.id,label:d.nombre+' — '+d.mail}});return [{id:'admin',label:'Administrador BUSCODOCENTE — admin@buscodocente.es'}]}
+function renderLogin(){
+ var lg=document.getElementById('loginLogo'); if(lg) lg.src=LOGO_BD;
+ var lt=document.getElementById('loginTabs'); if(!lt) return;
+ lt.innerHTML=[['centro','Centro'],['docente','Docente'],['admin','Admin']].map(function(r){return '<button class="'+(loginRol===r[0]?'act':'')+'" onclick="loginRol=\''+r[0]+'\';renderLogin()">'+r[1]+'</button>'}).join('');
+ var acc=loginAccounts(); document.getElementById('loginAccount').innerHTML=acc.map(function(a){return '<option value="'+a.id+'">'+esc(a.label)+'</option>'}).join('');
+ var em=document.getElementById('loginEmail'); if(!em.value) em.value = loginRol==='admin'?'admin@buscodocente.es':(loginRol==='centro'?centro().mail:docente().mail);
+ var ps=document.getElementById('loginPass'); if(!ps.value) ps.value='demo123';
+}
+function doLogin(){
+ var em=document.getElementById('loginEmail').value.trim(), ps=document.getElementById('loginPass').value, err=document.getElementById('loginError');
+ if(em.indexOf('@')<0){err.textContent='Pon un email válido para entrar.';return}
+ if(ps!=='demo123'){err.textContent='Contraseña de demo incorrecta. Es demo123.';return}
+ err.textContent='';
+ rol=loginRol; tab=rol==='docente'?'tablon':'panel';
+ var acc=document.getElementById('loginAccount').value;
+ if(rol==='centro') centroId=acc; if(rol==='docente') docenteId=acc;
+ session={rol:rol,centroId:centroId,docenteId:docenteId,email:em}; try{localStorage.setItem('buscodocente_session_v8',JSON.stringify(session))}catch(e){}
+ toast('Sesión iniciada como '+({centro:'centro',docente:'docente',admin:'administrador'})[rol]); render();
+}
+function logout(){centroSel=null;docenteSel=null;session=null; try{localStorage.removeItem('buscodocente_session_v8')}catch(e){} document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; renderLogin()}
+function toggleSidebar(){document.body.classList.toggle('sb-collapsed'); try{localStorage.setItem('buscodocente_sb',document.body.classList.contains('sb-collapsed')?'1':'0')}catch(e){}}
+try{if(localStorage.getItem('buscodocente_sb')==='1') document.body.classList.add('sb-collapsed')}catch(e){}
+function exportDocentesCSV(){
+ var rows=[['Codigo','Nombre','Familia','Especialidad','Lugar','Modalidad','Precio/hora','Experiencia','Disponibilidad']];
+ filtraDocentes(S.docentes).forEach(function(d){var completo=centro().plan==='completo';rows.push([d.codigo,completo?d.nombre:'(anonimo)',d.familia,d.esp,d.lugar,d.modalidad,d.precio,d.exp,d.dispo])});
+ var csv=rows.map(function(r){return r.map(function(x){return '"'+String(x).replace(/"/g,'""')+'"'}).join(';')}).join('\n');
+ var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='docentes-buscodocente.csv'; a.click(); toast('Listado exportado en CSV');
+}
+var ICONS={
+ chart:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></span>',
+ file:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>',
+ search:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>',
+ users:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>',
+ clip:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 12 11 14 15 10"/></svg></span>',
+ receipt:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/></svg></span>',
+ chat:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>',
+ user:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>',
+ card:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>',
+ building:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="8" y2="6"/><line x1="16" y1="6" x2="16" y2="6"/><line x1="12" y1="6" x2="12" y2="6"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/></svg></span>',
+ cap:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span>',
+ calendar:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>',
+ check:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>',
+ star:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>',
+ starFill:'<span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>',
+ bell:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>',
+ menu:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>',
+ phone:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>',
+ mail:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>',
+ pin:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>',
+ lock:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>',
+ alert:'<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>'
+};
+function menuItems(){
+ var u=unreadCount(); var fn=rol==='docente'?favNoDisp():0;
+ if(rol==='centro') return [['Panel','panel',ICONS.chart,'Panel'],['Mis ofertas','ofertas',ICONS.file,'Cursos'],['Selección docente','seleccion',ICONS.search,'Cursos'],['Calendario','calendario',ICONS.calendar,'Cursos'],['Contratación','contratacion',ICONS.users,'Contratación'],['Seguimiento','seguimiento',ICONS.clip,'Contratación'],['Facturación','facturacion',ICONS.receipt,'Contratación'],['Mensajería','mensajeria',ICONS.chat,'Comunicación',u],['Mi perfil','perfil',ICONS.user,'Cuenta'],['Suscripción','suscripcion',ICONS.star,'Cuenta']];
+ if(rol==='docente') return [['Tablón de ofertas','tablon',ICONS.file,'Ofertas'],['Mis postulaciones','postulaciones',ICONS.check,'Ofertas'],['Favoritos','favoritos',ICONS.star,'Ofertas',fn],['Calendario','calendario',ICONS.calendar,'Ofertas'],['Panel','panel',ICONS.chart,'Panel'],['Contratación','contratacion',ICONS.users,'Mis cursos'],['Seguimiento','seguimiento',ICONS.clip,'Mis cursos'],['Facturación','facturacion',ICONS.receipt,'Mis cursos'],['Mensajería','mensajeria',ICONS.chat,'Comunicación',u],['Mi perfil','perfil',ICONS.user,'Cuenta']];
+ return [['Panel','panel',ICONS.chart,'Principal'],['Centros','centros',ICONS.building,'Gestión'],['Docentes','docentes',ICONS.cap,'Gestión'],['Ofertas','ofertas',ICONS.file,'Gestión'],['Contrataciones','contrataciones',ICONS.users,'Gestión'],['Suscripciones','suscripciones',ICONS.star,'Gestión'],['Calendario','calendario',ICONS.calendar,'Gestión'],['Mensajería','mensajeria',ICONS.chat,'Comunicación',u]];
+}
+function renderChrome(){
+ if(!session){return}
+ var sb=document.getElementById('sidebar'); if(!sb) return;
+ var who= rol==='admin'?'Administrador':(rol==='centro'?centro().nombre:docente().nombre);
+ var sub= rol==='admin'?'Acceso a todo':(rol==='centro'?planNombre(centro().plan):docente().esp);
+ var secs={}; menuItems().forEach(function(m){(secs[m[3]]=secs[m[3]]||[]).push(m)});
+ sb.innerHTML='<div class="logo"><img src="'+LOGO_BD+'" alt="buscodocente"><span class="mark">B</span> <span class="badge">v8</span></div><nav>'+Object.keys(secs).map(function(sec){return '<div class="sec">'+sec+'</div>'+secs[sec].map(function(m){return '<button class="'+(tab===m[1]?'act':'')+'" onclick="tab=\''+m[1]+'\';centroSel=null;docenteSel=null;document.body.classList.remove(\'sb-open\');render()"><span class="ico">'+m[2]+'</span><span class="lbl n">'+m[0]+'</span>'+(m[4]?'<span class="bdg">'+m[4]+'</span>':'')+'</button>'}).join('')}).join('')+'</nav><div class="userbox"><b class="lbl">'+esc(who)+'</b><span class="lbl">'+esc(sub)+'</span><p style="margin:8px 0 0"><button class="btn2" style="width:100%" onclick="logout()">Cerrar sesión</button></p></div>';
+ var tb=document.getElementById('topbar'); if(tb) tb.innerHTML='<button class="btn2" onclick="if(window.innerWidth<=820){document.body.classList.toggle(\'sb-open\')}else{toggleSidebar()}">'+ICONS.menu+'</button><b>'+esc({panel:'Panel',seleccion:'Selección docente',ofertas:rol==='centro'?'Mis ofertas':'Ofertas',tablon:'Tablón de ofertas',postulaciones:'Mis postulaciones',contratacion:'Contratación',seguimiento:'Seguimiento',facturacion:'Facturación',mensajeria:'Mensajería',perfil:'Mi perfil',suscripcion:'Suscripción',centros:'Centros',docentes:'Docentes',contrataciones:'Contrataciones',suscripciones:'Suscripciones',favoritos:'Favoritos',calendario:'Calendario'}[tab]||'Panel')+'</b>'+(tab==='seleccion'||tab==='tablon'?'<div class="search"><input id="topSearch" placeholder="Buscar docente, curso o centro…" value="'+esc(filtro.text||'')+'" oninput="filtro.text=this.value;renderVista()"></div>':'')+'<button class="bell" title="Mensajes sin leer" onclick="tab=\'mensajeria\';render()">'+ICONS.bell+'<i>'+unreadCount()+'</i></button><span class="mut" style="white-space:nowrap">'+esc(who)+'</span>';
+}
+function setRol(r){rol=r;tab='panel';render()}
+var FAMILIAS=['Idiomas','Tecnología','Marketing digital','Sanidad','Diseño','Empresa','Educación','Hostelería y Turismo','Comercio y Ventas','Logística y Transporte','Energías Renovables','Construcción','Belleza y Estética','Deporte y Actividad Física','Música y Artes','Cocina y Alimentación','Seguridad y Prevención','Agricultura y Medio Ambiente'];
+function filtrosHTML(){
+ var fams=[''].concat(FAMILIAS);
+ return '<div class="filtros-bar"><div><label>Familia</label><select id="fFam" onchange="filtro.fam=this.value;renderVista()">'+fams.map(function(f){return '<option '+(filtro.fam===f?'selected':'')+'>'+(f||'Todas')+'</option>'}).join('')+'</select></div>'+
+ '<div><label>Modalidad</label><select id="fMod" onchange="filtro.mod=this.value;renderVista()"><option value="">Todas</option><option '+(filtro.mod==='Online'?'selected':'')+'>Online</option><option '+(filtro.mod==='Presencial'?'selected':'')+'>Presencial</option><option '+(filtro.mod==='Híbrida'?'selected':'')+'>Híbrida</option></select></div>'+
+ '<div><label>Lugar</label><input id="fLug" value="'+esc(filtro.lug)+'" placeholder="Vigo u Online" oninput="filtro.lug=this.value;renderVista()"></div>'+
+ '<div><label>Precio máx. €/h</label><input type="number" id="fMax" value="'+esc(filtro.max)+'" placeholder="40" oninput="filtro.max=this.value;renderVista()"></div>'+
+ '<button class="btn2 btn-limpiar" onclick="limpiarFiltros()">Limpiar</button></div>';
+}
+function limpiarFiltros(){filtro={fam:'',mod:'',lug:'',max:'',text:''};var s=document.getElementById('topSearch');if(s)s.value='';renderVista()}
+function filtraDocentes(list){return list.filter(function(d){
+ var t=(filtro.text||'').toLowerCase();
+ return (d.llamamiento!==false)&&(!filtro.fam||d.familia===filtro.fam)&&(!filtro.mod||d.modalidad===filtro.mod)&&(!filtro.lug||(d.lugar+d.modalidad).toLowerCase().indexOf(filtro.lug.toLowerCase())>=0)&&(!filtro.max||d.precio<=Number(filtro.max))&&(!t||(d.nombre+' '+d.esp+' '+d.familia+' '+d.lugar).toLowerCase().indexOf(t)>=0);
+})}
+function tarjetaDocente(d,paraCentro){
+ var completo = !paraCentro || centro().plan==='completo';
+ var nombre = completo ? esc(d.nombre) : 'Docente '+esc(d.codigo)+' (perfil anónimo)';
+ var contacto = completo ? '<p>'+ICONS.phone+' '+esc(d.tel)+' · '+ICONS.mail+' '+esc(d.mail)+' · DNI: '+esc(d.dni)+'</p><p>'+ICONS.cap+' '+esc(d.titulo)+'</p><p><button class="btn2" onclick="alert(\'DEMO: aquí se descargaría el CV completo de '+esc(d.nombre)+'\')">Descargar CV completo</button></p>'
+   : '<div class="aviso">'+ICONS.lock+' <b>Datos de contacto ocultos en tu plan.</b> Con el plan Básico ves el perfil profesional anónimo; con el plan Completo ves nombre, teléfono, email, CV y títulos. <button class="btn2" onclick="tab=\'suscripcion\';render()">Ver planes</button></div>';
+ return '<div class="card"><h3>'+nombre+' '+(d.verif?'<span class="pill v">✓ Verificado</span>':'<span class="pill o">Pendiente de verificación</span>')+'</h3>'+
+ '<p><span class="pill">'+esc(d.familia)+'</span> <span class="pill">'+esc(d.modalidad)+'</span> <span class="pill">'+esc(d.lugar)+'</span></p>'+
+ '<p><b>'+esc(d.esp)+'</b></p><p class="mut">'+esc(d.bio)+'</p>'+
+ '<p>'+ICONS.star+' '+d.val+' · '+d.exp+' años de experiencia · <b>'+d.precio+' €/hora</b> · '+esc(d.tipo)+'</p><p class="mut">Disponibilidad: '+esc(d.dispo)+'</p>'+contacto+
+ (paraCentro?'<p><button class="btn" onclick="contactar(\''+d.id+'\')" '+(completo?'':'disabled')+'>'+ICONS.chat+' Contactar</button> <button class="btnv" onclick="contratar(\''+d.id+'\')">Contratar / Seleccionar</button></p><p class="mut">El contacto siempre es por mensajería interna de BUSCODOCENTE, nunca se entrega el teléfono o el email fuera de la plataforma antes de la contratación.</p>':'')+'</div>';
+}
+function tarjetaOferta(o,paraDocente){
+ var c=nombreCentro(o.centroId);
+ var esFav=paraDocente&&(docente().fav||[]).indexOf(o.id)>=0;
+ var noDisp=o.estado!=='Abierta';
+ return '<div class="card"><h3>'+esc(o.titulo)+'</h3><p><span class="pill">'+esc(o.familia)+'</span> <span class="pill">'+esc(o.modalidad)+'</span> <span class="pill">'+esc(o.lugar)+'</span> <span class="pill '+(noDisp?'o':'v')+'">'+esc(o.estado)+'</span></p>'+
+ '<p class="mut">Centro: '+esc(c)+' · Inicio: '+esc(o.inicio)+' · '+o.horas+' h · '+o.precio+' €/hora</p><p>'+esc(o.desc)+'</p>'+
+ (paraDocente?'<p><button class="btn" onclick="postular(\''+o.id+'\')" '+((o.postulantes.indexOf(docenteId)>=0||noDisp)?'disabled':'')+'>'+(o.postulantes.indexOf(docenteId)>=0?'✓ Ya te has postulado':'Postularme a este curso')+'</button> <button class="btn2 fav-btn" onclick="toggleFav(this)" data-id="'+o.id+'">'+(esFav?ICONS.starFill+' En favoritos':ICONS.star+' Añadir a favoritos')+'</button></p>'+
+ (noDisp?'<p><span class="pill o">'+ICONS.alert+' Ya no está disponible</span> <span class="mut">Esta oferta salió del tablón.</span></p>':''):
+ '<p class="mut">Postulantes: '+(o.postulantes.length?o.postulantes.map(function(id){return esc(nombreDocente(id))}).join(', '):'aún ninguno')+'</p>'+
+ ((!paraDocente&&rol==='centro'&&o.centroId===centroId)?'<p><button class="btn2" onclick="cerrarOferta(this)" data-id="'+o.id+'">'+(noDisp?'Reabrir oferta':'Cerrar oferta')+'</button></p>':''))+'</div>';
+}
+function kpi(n,l,go){return '<div class="kpi kpi-link" onclick="tab=\''+go+'\';render()" title="Ver '+l+'"><b>'+n+'</b><span>'+l+'</span></div>'}
+function panelHTML(){
+ var meses=[['Jun',1],['Jul',2],['Ago',2],['Sep',3],['Oct',4],['Nov',5]];
+ if(rol==='admin'){
+  var mrr=S.centros.reduce(function(a,c){return a+planPrecio(c.plan)},0);
+  var porFam={}; S.docentes.forEach(function(d){porFam[d.familia]=(porFam[d.familia]||0)+1});
+  var famRows=Object.keys(porFam).map(function(f){return [f,porFam[f]]});
+  var act=S.contrataciones.map(function(k){return {t:'Contratación: '+nombreDocente(k.docenteId)+' → '+nombreCentro(k.centroId),f:k.fecha}}).concat(S.facturas.map(function(f){return {t:'Factura '+f.importe+' €: '+f.concepto,f:f.fecha}})).sort(function(a,b){return b.f<a.f?-1:1}).slice(0,5);
+  return '<div class="kpis">'+kpi(mrr+' €/mes','Ingreso recurrente (MRR)','suscripciones')+kpi(S.centros.length,'Centros registrados','centros')+kpi(S.docentes.length,'Docentes registrados','docentes')+kpi(S.contrataciones.filter(function(k){return k.estado==='Contratado'}).length,'Contrataciones activas','contrataciones')+'</div>'+
+  '<div class="grid" style="margin-top:14px"><div class="card"><h3>Contrataciones por mes</h3>'+barChart(meses,'#2563eb')+'<p class="mut">Tendencia de contratación en la plataforma (datos de demo).</p></div>'+
+  '<div class="card"><h3>Docentes por familia formativa</h3>'+barChart(famRows,'#2563eb')+'</div>'+
+  '<div class="card"><h3>Centros por plan</h3>'+donut([['Completo 99 €',S.centros.filter(function(c){return c.plan==='completo'}).length,'#2563eb'],['Básico 49 €',S.centros.filter(function(c){return c.plan==='basico'}).length,'#f59e0b']])+'</div>'+
+  '<div class="card"><h3>Actividad reciente</h3>'+act.map(function(a){return '<p>• '+esc(a.t)+' <span class="mut">('+esc(a.f)+')</span></p>'}).join('')+'<p><button class="btn2" onclick="tab=\'centros\';render()">Ver centros</button> <button class="btn2" onclick="exportDocentesCSV()">Exportar docentes (CSV)</button></p></div></div>';
+ }
+ if(rol==='centro'){
+  var mis=S.ofertas.filter(function(o){return o.centroId===centroId});
+  var ks=S.contrataciones.filter(function(k){return k.centroId===centroId});
+  var pend=S.facturas.filter(function(f){return f.centroId===centroId&&f.estado==='Pendiente'}).reduce(function(a,f){return a+f.importe},0);
+  var prox=S.ofertas.filter(function(o){return o.centroId===centroId&&o.estado==='Abierta'}).sort(function(a,b){return a.inicio<b.inicio?-1:1}).slice(0,4);
+  return '<div class="kpis">'+kpi(mis.length,'Ofertas publicadas','ofertas')+kpi(mis.reduce(function(a,o){return a+o.postulantes.length},0),'Postulaciones recibidas','ofertas')+kpi(ks.filter(function(k){return k.estado==='Contratado'}).length,'Docentes contratados','contratacion')+kpi(pend+' €','Pendiente de pago','facturacion')+'</div>'+
+  '<div class="grid" style="margin-top:14px"><div class="card"><h3>Postulaciones por oferta</h3>'+(mis.length?barChart(mis.map(function(o){return [o.titulo.slice(0,22),o.postulantes.length]}),'#2563eb'):'<p class="mut">Publica tu primera oferta para ver postulaciones aquí.</p>')+'</div>'+
+  '<div class="card"><h3>Contrataciones por estado</h3>'+donut([['Contratado',ks.filter(function(k){return k.estado==='Contratado'}).length,'#16a34a'],['En negociación',ks.filter(function(k){return k.estado==='En negociación'}).length,'#f59e0b'],['Finalizado',ks.filter(function(k){return k.estado==='Finalizado'}).length,'#94a3b8']])+'</div>'+
+  '<div class="card"><h3>Próximos cursos</h3>'+(prox.length?prox.map(function(o){return '<p>'+ICONS.calendar+' <b>'+esc(o.inicio)+'</b> — '+esc(o.titulo)+' · '+o.postulantes.length+' postulantes</p>'}).join(''):'<p class="mut">Sin cursos próximos.</p>')+'<p><button class="btn" onclick="tab=\'ofertas\';render()">Publicar una oferta</button></p></div>'+
+  '<div class="card"><h3>Tu plan</h3><p><b>'+esc(planNombre(centro().plan))+'</b></p><p class="mut">Con el Básico los perfiles son anónimos; con el Completo ves nombre, teléfono, email y CV.</p><p><button class="btn2" onclick="tab=\'suscripcion\';render()">Cambiar de plan</button> <button class="btn2" onclick="exportDocentesCSV()">Exportar docentes (CSV)</button></p></div></div>';
+ }
+ var misPost=S.ofertas.filter(function(o){return o.postulantes.indexOf(docenteId)>=0});
+ var misK=S.contrataciones.filter(function(k){return k.docenteId===docenteId});
+ var ing=S.facturas.filter(function(f){return f.docenteId===docenteId});
+ var totalIng=ing.reduce(function(a,f){return a+f.importe},0);
+ var porFam2={}; S.ofertas.filter(function(o){return o.estado==='Abierta'}).forEach(function(o){porFam2[o.familia]=(porFam2[o.familia]||0)+1});
+ return '<div class="kpis">'+kpi(S.ofertas.filter(function(o){return o.estado==='Abierta'}).length,'Ofertas abiertas','tablon')+kpi(misPost.length,'Tus postulaciones','postulaciones')+kpi(misK.filter(function(k){return k.estado==='Contratado'}).length,'Cursos contratados','contratacion')+kpi(totalIng+' €','Facturado en la demo','facturacion')+'</div>'+
+ '<div class="grid" style="margin-top:14px"><div class="card"><h3>Ofertas por familia</h3>'+barChart(Object.keys(porFam2).map(function(f){return [f,porFam2[f]]}),'#2563eb')+'<p class="mut">Dónde hay más demanda ahora mismo.</p></div>'+
+ '<div class="card"><h3>Tus ingresos por factura</h3>'+(ing.length?barChart(ing.map(function(f){return [f.concepto.slice(0,20),f.importe]}),'#16a34a'):'<p class="mut">Aún no has emitido facturas. Cuando te contraten, emítelas en Facturación.</p>')+'</div>'+
+ '<div class="card"><h3>Tu perfil</h3><p>'+ICONS.star+' <b>'+docente().val+'</b> de valoración media · '+docente().exp+' años de experiencia · <b>'+docente().precio+' €/hora</b></p><p class="mut">'+esc(docente().bio)+'</p><p><button class="btn2" onclick="tab=\'perfil\';render()">Completar mi perfil</button></p></div>'+
+ '<div class="card"><h3>Próximos cursos contratados</h3>'+(misK.length?misK.map(function(k){var o=oferta(k.ofertaId);return '<p>'+ICONS.calendar+' <b>'+esc(k.fecha)+'</b> — '+esc(o?o.titulo:'Curso')+' · '+esc(k.estado)+'</p>'}).join(''):'<p class="mut">Aún no tienes cursos contratados. Postúlate en el tablón.</p>')+'<p><button class="btn" onclick="tab=\'tablon\';render()">Ver ofertas</button></p></div></div>';
+}
+
+function seleccionHTML(){
+ var list=filtraDocentes(S.docentes);
+ var h='<h2>Selección docente</h2><p><button class="btn2" onclick="exportDocentesCSV()">Exportar listado (CSV)</button></p><p class="mut">Filtra por lugar, familia formativa, modalidad, precio/hora y disponibilidad. Tu plan actual: <b>'+esc(planNombre(centro().plan))+'</b> — con el Básico los perfiles son anónimos; con el Completo ves todos los datos y el CV.</p>'+filtrosHTML();
+ h+= list.length?'<div class="grid">'+list.map(function(d){return tarjetaDocente(d,true)}).join('')+'</div>':'<div class="aviso">Ningún docente coincide con esos filtros. Prueba a quitar el precio máximo o el lugar.</div>';
+ return h;
+}
+function tablonHTML(){
+ var tt=(filtro.text||'').toLowerCase(); var list=S.ofertas.filter(function(o){return o.estado==='Abierta'&&(!filtro.fam||o.familia===filtro.fam)&&(!filtro.mod||o.modalidad===filtro.mod)&&(!filtro.lug||(o.lugar+o.titulo).toLowerCase().indexOf(filtro.lug.toLowerCase())>=0)&&(!filtro.max||o.precio<=Number(filtro.max))&&(!tt||(o.titulo+' '+o.familia+' '+o.lugar).toLowerCase().indexOf(tt)>=0)});
+ return '<h2>Tablón de ofertas de cursos</h2><p class="mut">Estas son las ofertas que los centros quieren implantar. Postúlate y el centro podrá contactarte por mensajería interna.</p>'+filtrosHTML()+(list.length?'<div class="grid">'+list.map(function(o){return tarjetaOferta(o,true)}).join('')+'</div>':'<div class="aviso">No hay ofertas con esos filtros.</div>');
+}
+function ofertasCentroHTML(){
+ var mis=S.ofertas.filter(function(o){return o.centroId===centroId});
+ var h='<h2>Mis ofertas</h2><div class="card"><h3>Publicar un curso nuevo</h3><label>Título del curso</label><input id="nTitulo" placeholder="Ej: Excel avanzado para oficinas"><label>Familia formativa</label><select id="nFam">'+FAMILIAS.map(function(f){return '<option>'+f+'</option>'}).join('')+'</select><label>Modalidad</label><select id="nMod"><option>Online</option><option>Presencial</option><option>Híbrida</option></select><label>Lugar / Horas / Precio por hora (€) / Fecha de inicio</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px"><input id="nLug" placeholder="Online o ciudad"><input id="nHor" type="number" placeholder="Horas"><input id="nPre" type="number" placeholder="€/hora"><input id="nIni" type="date"></div><label>Descripción</label><textarea id="nDesc" placeholder="Qué debe impartir el docente, grupo, material..."></textarea><p><button class="btn" onclick="crearOferta()">Publicar oferta</button></p></div><h3>Ofertas publicadas</h3>';
+ h+= mis.length?'<div class="grid">'+mis.map(function(o){return tarjetaOferta(o,false)}).join('')+'</div>':'<p class="mut">Aún no has publicado ninguna oferta.</p>';
+ return h;
+}
+</script>
+<script>
+function contratacionHTML(){
+ var list=S.contrataciones.filter(function(k){return rol==='admin'||(rol==='centro'&&k.centroId===centroId)||(rol==='docente'&&k.docenteId===docenteId)});
+ if(!list.length) return '<h2>Contratación</h2><p class="mut">Aquí aparecerá el histórico: fechas, cursos y valoración de cada contratación.</p>';
+ return '<h2>Contratación</h2><p class="mut">Histórico de docentes contratados (centro) / centros que te han contratado (docente). La negociación y la firma quedan registradas aquí, sin intercambiar datos de contacto fuera de la plataforma.</p><div class="grid">'+list.map(function(k){
+  var o=oferta(k.ofertaId); var esDoc=rol==='docente';
+  var acciones='';
+  if(esDoc&&k.estado==='En negociación') acciones='<p><button class="btnv" onclick="cambiarEstado(\''+k.id+'\',\'Contratado\')">Aceptar contratación</button> <button class="btn2" onclick="cambiarEstado(\''+k.id+'\',\'Rechazado\')">Rechazar</button></p>';
+  if(esDoc&&k.estado==='Contratado') acciones='<p><button class="btn2" onclick="cambiarEstado(\''+k.id+'\',\'Finalizado\')">Marcar curso como finalizado</button></p>';
+  if(rol==='centro'&&k.estado==='Contratado') acciones='<p><label>Tu valoración al finalizar (1-5)</label><select id="val-'+k.id+'"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select> <button class="btn2" onclick="valorar(\''+k.id+'\')">Guardar valoración</button></p>';
+  return '<div class="card"><h3>'+esc(o?o.titulo:'Curso')+'</h3><p><span class="pill">'+esc(k.estado)+'</span></p><p>Centro: '+esc(nombreCentro(k.centroId))+'<br>Docente: '+esc(nombreDocente(k.docenteId))+'<br>Desde: '+esc(k.fecha)+'<br>Valoración: '+(k.valCentro?k.valCentro+' '+ICONS.star:'aún sin valorar')+'</p>'+acciones+'</div>';
+ }).join('')+'</div>';
+}
+function seguimientoHTML(){
+ var list=S.contrataciones.filter(function(k){return k.estado==='Contratado'||k.estado==='Finalizado'}).filter(function(k){return rol==='admin'||(rol==='centro'&&k.centroId===centroId)||(rol==='docente'&&k.docenteId===docenteId)});
+ if(!list.length) return '<h2>Seguimiento</h2><p class="mut">Cuando un docente esté contratado, aquí anotará el seguimiento de cada curso para que el centro tenga registro. Prueba: contrata a un docente y vuelve aquí.</p>';
+ return '<h2>Seguimiento de cursos contratados</h2><p class="mut">El docente contratado anota aquí el seguimiento realizado de cada curso, para que el centro tenga registro.</p>'+list.map(function(k){
+  var o=oferta(k.ofertaId);
+  var form=rol==='docente'?'<label>Nuevo registro de seguimiento</label><textarea id="seg-'+k.id+'" placeholder="Ej: Sesión del 12 de noviembre: tema impartido, asistencia, incidencias..."></textarea><p><button class="btn" onclick="addSeg(\''+k.id+'\')">Añadir registro</button></p>':'<p class="mut">Solo el docente contratado puede añadir registros; el centro los consulta aquí.</p>';
+  var regs=k.seguimiento.length?k.seguimiento.map(function(s){return '<p>'+ICONS.clip+' <b>'+esc(s.fecha)+':</b> '+esc(s.texto)+'</p>'}).join(''):'<p class="mut">Aún no hay registros para este curso.</p>';
+  return '<div class="card"><h3>'+esc(o?o.titulo:'Curso')+' — '+esc(nombreDocente(k.docenteId))+'</h3>'+regs+form+'</div>';
+ }).join('');
+}
+function facturacionHTML(){
+ var h='<h2>Facturación</h2>';
+ if(rol==='docente'){
+  h+='<div class="card"><h3>Emitir una factura a un centro</h3><label>Centro</label><select id="facCentro">'+S.centros.map(function(c){return '<option value="'+c.id+'">'+esc(c.nombre)+'</option>'}).join('')+'</select><label>Concepto</label><input id="facConc" placeholder="Ej: Curso Python — noviembre (20 h)"><label>Importe (€)</label><input id="facImp" type="number" placeholder="900"><p><button class="btn" onclick="emitirFactura()">Enviar factura al centro</button></p><p class="mut">La factura llega al centro por BUSCODOCENTE; el centro la ve en su Facturación y la paga fuera o la marca como pagada en la versión real (Stripe / transferencia).</p></div>';
+ }
+ var list=S.facturas.filter(function(f){return rol==='admin'||(rol==='centro'&&f.centroId===centroId)||(rol==='docente'&&f.docenteId===docenteId)});
+ h+='<h3>Facturas</h3><table><tr><th>Fecha</th><th>Concepto</th><th>De / Para</th><th>Importe</th><th>Estado</th></tr>'+list.map(function(f){return '<tr><td>'+esc(f.fecha)+'</td><td>'+esc(f.concepto)+'</td><td>'+esc(f.tipo)+(f.docenteId?' · '+esc(nombreDocente(f.docenteId)):'')+'</td><td><b>'+f.importe+' €</b></td><td>'+esc(f.estado)+'</td></tr>'}).join('')+'</table>';
+ if(rol==='centro') h+='<p class="mut">También ves aquí tu factura de suscripción a BUSCODOCENTE ('+planPrecio(centro().plan)+' €/mes en el plan '+esc(planNombre(centro().plan))+'). En la versión real se genera automáticamente con Stripe.</p>';
+ return h;
+}
+function misChats(){return S.conversaciones.filter(function(c){
+ if(rol==='admin') return !!c.admin;
+ if(rol==='centro') return c.centroId===centroId;
+ return c.docenteId===docenteId;
+})}
+function otroDeChat(c){
+ if(c.admin){
+  if(rol==='admin') return c.docenteId?{nombre:nombreDocente(c.docenteId),rol:'Docente'}:{nombre:nombreCentro(c.centroId),rol:'Centro'};
+  return {nombre:'Administrador BUSCODOCENTE',rol:'Admin'};
+ }
+ if(rol==='centro') return {nombre:nombreDocente(c.docenteId),rol:'Docente'};
+ return {nombre:nombreCentro(c.centroId),rol:'Centro'};
+}
+function ultimoMsg(c){return c.msgs[c.msgs.length-1]||null}
+function chatNoLeido(c){var l=ultimoMsg(c);if(!l) return false;return l.de!==rol}
+function mensajeriaHTML(){
+ var list=misChats().slice().sort(function(a,b){var fa=(ultimoMsg(a)||{fecha:''}).fecha,fb=(ultimoMsg(b)||{fecha:''}).fecha;return fb<fa?-1:(fb>fa?1:0)});
+ if(!list.length) return '<h2>Mensajería</h2>'+(rol==='admin'?'<p class="mut">Aún no tienes conversaciones directas. Abre una desde Centros o Docentes, o crea una nueva abajo.</p>'+nuevaConversacionAdminHTML():'<p class="mut">Aún no hay conversaciones. Desde Selección docente (centro) o desde una postulación (docente) se abre el primer mensaje.</p>');
+ var conv=list.find(function(c){return c.id===convId})||list[0]; convId=conv.id;
+ var otro=otroDeChat(conv);
+ var lista=list.map(function(c){var o=otroDeChat(c);var l=ultimoMsg(c);var of=oferta(c.ofertaId);return '<div class="'+(c.id===conv.id?'act':'')+'" onclick="convId=\''+c.id+'\';renderVista()"><b>'+esc(o.nombre)+'</b> <span class="pill">'+o.rol+'</span>'+(chatNoLeido(c)?' <span style="background:#2563eb;color:#fff;border-radius:12px;padding:1px 7px;font-size:11px;font-weight:bold">Nuevo</span>':'')+'<br><span class="mut">'+esc(l?l.texto:'Sin mensajes todavía')+'</span><br><span class="mut">'+esc(of?('Curso: '+of.titulo):(l?l.fecha:''))+'</span></div>'}).join('');
+ var msgs=conv.msgs.map(function(m){var yo=m.de===rol;return '<div class="msg '+(yo?'yo':'')+'"><b>'+(yo?'Tú':(m.de==='admin'?'Administrador':(m.de==='centro'?'Centro':'Docente')))+':</b> '+esc(m.texto)+'<br><span class="mut">'+esc(m.fecha)+'</span></div>'}).join('')||'<p class="mut" style="padding:16px">Aún no hay mensajes en esta conversación. Escribe el primero abajo.</p>';
+ return '<h2>Mensajería</h2><div class="aviso">'+ICONS.lock+' Cada conversación es privada entre sus dos participantes: tú solo ves tus chats, y cada usuario con el que hablas tiene su propio chat. Los mensajes de un chat nunca se muestran en otro.</div>'+
+ '<div class="chat"><div class="conv">'+lista+'</div><div><div class="chat-head"><b>'+esc(otro.nombre)+'</b> <span class="pill">'+otro.rol+'</span><br><span class="mut">Conversación privada entre tú y '+esc(otro.nombre)+'</span></div><div class="msgs">'+msgs+'</div><div style="padding:12px;border-top:1px solid var(--borde)"><textarea id="nMsg" placeholder="Escribe tu mensaje..."></textarea><p><button class="btn" onclick="enviarMsg()">Enviar</button> <button class="btn2" onclick="simularRespuesta()">Simular respuesta del otro lado (demo)</button></p></div></div></div>'+
+ (rol==='admin'?nuevaConversacionAdminHTML():'');
+}
+function nuevaConversacionAdminHTML(){
+ var opts='<optgroup label="Centros">'+S.centros.map(function(c){return '<option value="centro:'+c.id+'">'+esc(c.nombre)+'</option>'}).join('')+'</optgroup><optgroup label="Docentes">'+S.docentes.map(function(d){return '<option value="docente:'+d.id+'">'+esc(d.nombre)+'</option>'}).join('')+'</optgroup>';
+ return '<div class="card" style="margin-top:16px"><h3>Nueva conversación directa</h3><p class="mut">Abre un chat privado 1 a 1 con un centro o un docente. Solo tú y esa persona veréis los mensajes.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><select id="nuevoChatCon" style="flex:1;min-width:200px">'+opts+'</select><button class="btn" onclick="abrirChatAdmin()">Abrir chat →</button></div></div>';
+}
+function abrirChatAdmin(){
+ var v=document.getElementById('nuevoChatCon').value.split(':');contactarAdmin(v[0],v[1]);
+}
+function contactarAdmin(tipo,id){
+ var ex=S.conversaciones.find(function(c){return c.admin&&((tipo==='docente'&&c.docenteId===id)||(tipo==='centro'&&c.centroId===id))});
+ if(!ex){ex={id:'m'+Date.now(),admin:true,centroId:tipo==='centro'?id:null,docenteId:tipo==='docente'?id:null,ofertaId:null,msgs:[]};S.conversaciones.push(ex)}
+ convId=ex.id;save();tab='mensajeria';render();
+}
+function perfilHTML(){
+ if(rol==='admin') return '<h2>Perfil administrador</h2><div class="card"><p>Acceso a todo: puedes revisar y gestionar centros, docentes, ofertas, contrataciones y suscripciones desde las pestañas superiores. En la versión real, aquí también irían los permisos de otros administradores y el registro de actividad.</p></div>';
+ if(rol==='centro'){
+  var c=centro();
+  return '<h2>Mi perfil — Centro de formación</h2><div class="card"><label>Nombre del centro</label><input id="pNombre" value="'+esc(c.nombre)+'"><label>NIF</label><input id="pNif" value="'+esc(c.nif)+'"><label>Responsable</label><input id="pResp" value="'+esc(c.responsable)+'"><label>Teléfono</label><input id="pTel" value="'+esc(c.tel)+'"><label>Email</label><input id="pMail" value="'+esc(c.mail)+'"><label>Dirección</label><input id="pDir" value="'+esc(c.direccion)+'"><label>Cuenta corriente (para facturación)</label><input id="pCta" value="'+esc(c.cuenta)+'"><p><button class="btn2" onclick="abrirDocumento(this)" data-tipo="lopd" data-id="'+c.id+'">'+ICONS.file+' LOPD · '+esc(c.lopd)+'</button> <button class="btn2" onclick="abrirDocumento(this)" data-tipo="contrato" data-id="'+c.id+'">'+ICONS.file+' Contrato · '+esc(c.contrato)+'</button></p><p class="mut">En la versión real, aquí se subirían el documento LOPD y el contrato firmado (PDF), y quedarían archivados con fecha y firma.</p><p><button class="btn" onclick="guardarPerfilCentro()">Guardar perfil</button></p></div>';
+ }
+ var d=docente();
+ return '<h2>Mi perfil — Docente</h2><p class="mut">Estos son los datos en formato formulario que luego usan los centros para seleccionarte: lugar, familia formativa, modalidad, precio/hora y disponibilidad. Cuanto más completo, más apareces en sus filtros.</p><div class="card">'+
+ '<label>Nombre y apellidos</label><input id="dNombre" value="'+esc(d.nombre)+'"><label>DNI</label><input id="dDni" value="'+esc(d.dni)+'"><label>Teléfono</label><input id="dTel" value="'+esc(d.tel)+'"><label>Email</label><input id="dMail" value="'+esc(d.mail)+'">'+
+ '<label>Familia formativa</label><select id="dFam">'+FAMILIAS.map(function(f){return '<option '+(d.familia===f?'selected':'')+'>'+f+'</option>'}).join('')+'</select>'+
+ '<label>Especialidad</label><input id="dEsp" value="'+esc(d.esp)+'"><label>Lugar</label><input id="dLug" value="'+esc(d.lugar)+'"><label>Modalidad</label><select id="dMod">'+['Online','Presencial','Híbrida'].map(function(f){return '<option '+(d.modalidad===f?'selected':'')+'>'+f+'</option>'}).join('')+'</select>'+
+ '<label>Años de experiencia</label><input id="dExp" type="number" value="'+d.exp+'"><label>Precio por hora (€)</label><input id="dPre" type="number" value="'+d.precio+'"><label>Llamamiento</label><div class="card" style="margin:4px 0 12px;padding:14px"><div style="display:flex;align-items:center;gap:12px;justify-content:space-between"><div><b>'+(d.llamamiento===false?'Llamamiento desactivado':'Llamamiento activado')+'</b><br><span class="mut">Si está activado, tu perfil aparece en las búsquedas de los centros. Desactívalo si no estás disponible durante un tiempo: sigues dado de alta, pero no te encontrarán.</span></div><label class="switch"><input type="checkbox" '+(d.llamamiento===false?'':'checked')+' onchange="toggleLlamamiento()"><span class="slider"></span></label></div></div>'+
+ '<label>Días disponibles</label><div class="dias-row">'+['L','M','X','J','V','S','D'].map(function(dia,i){var on=((d.disp||{dias:['L','M','X','J','V']}).dias.indexOf(dia)>=0);return '<button type="button" class="dia-btn'+(on?' on':'')+'" onclick="toggleDia('+i+')">'+dia+'</button>'}).join('')+'</div>'+
+ '<label>Horario disponible</label><div class="diales">'+dialHTML(0)+dialHTML(1)+'</div>'+
+ '<p class="mut">Tu disponibilidad actual: <b>'+esc(dispDiasTexto(d))+'</b></p>'+
+ '<label>Tipo de contratación</label><input id="dTip" value="'+esc(d.tipo)+'"><label>Títulos y documentación</label><input id="dTit" value="'+esc(d.titulo)+'"><label>CV completo / presentación</label><textarea id="dBio">'+esc(d.bio)+'</textarea>'+
+ '<p><button class="btn" onclick="guardarPerfilDocente()">Guardar perfil</button></p></div>';
+}
+function suscripcionHTML(){
+ if(rol!=='centro'&&rol!=='admin') return '<h2>Suscripción</h2><p>La suscripción la pagan los centros. Como docente, tu perfil es gratis: solo pagas si en el futuro se añade algún servicio premium para docentes (destacados, por ejemplo), algo que aún está por decidir.</p>';
+ var c=centro();
+ return '<h2>Suscripción del centro</h2><p class="mut">Modelo de la v1 (propuesta, a confirmar): el centro paga por publicar y por el nivel de datos que puede ver. El docente no paga por estar en la plataforma.</p><div class="grid">'+
+ '<div class="plan '+(c.plan==='basico'?'sel':'')+'"><h3>Básico — 49 €/mes</h3><p>✓ Publicar ofertas ilimitadas<br>✓ Buscar y filtrar docentes<br>✓ Perfiles profesionales <b>anónimos</b> (familia, experiencia, modalidad, precio, disponibilidad)<br>✗ Sin nombre, teléfono, email ni CV<br>✓ Mensajería interna tras la selección</p><p><button class="btn" onclick="cambiarPlan(\'basico\')">Elegir Básico</button></p></div>'+
+ '<div class="plan '+(c.plan==='completo'?'sel':'')+'"><h3>Completo — 99 €/mes '+ICONS.star+' recomendado</h3><p>✓ Todo lo del Básico<br>✓ <b>Todos los datos</b>: nombre, teléfono, email, CV completo y títulos<br>✓ Contacto directo por mensajería interna<br>✓ Docentes destacados en búsquedas<br>✓ Histórico completo de contratación y facturación</p><p><button class="btn" onclick="cambiarPlan(\'completo\')">Elegir Completo</button></p></div></div>'+
+ '<div class="ok">Plan actual de '+esc(c.nombre)+': <b>'+esc(planNombre(c.plan))+'</b>. Cambiarlo aquí actualiza al instante qué datos ves en <b>Selección docente</b>. En la versión real el cobro sería automático con Stripe y la factura mensual llegaría a Facturación.</div>';
+}
+var fAdm={txt:'',plan:'',fam:'',llam:'',verif:''};
+function filtraCentrosAdmin(){var t=(fAdm.txt||'').toLowerCase();return S.centros.filter(function(c){return (!fAdm.plan||c.plan===fAdm.plan)&&(!t||(c.nombre+' '+c.responsable+' '+c.mail+' '+c.nif).toLowerCase().indexOf(t)>=0)})}
+function filtraDocentesAdmin(){var t=(fAdm.txt||'').toLowerCase();return S.docentes.filter(function(d){return (!fAdm.fam||d.familia===fAdm.fam)&&(!fAdm.llam||(fAdm.llam==='si'?d.llamamiento!==false:d.llamamiento===false))&&(!fAdm.verif||(fAdm.verif==='si'?d.verif:!d.verif))&&(!t||(d.nombre+' '+d.esp+' '+d.familia+' '+d.lugar).toLowerCase().indexOf(t)>=0)})}
+function limpiarFiltrosAdmin(){fAdm={txt:'',plan:'',fam:'',llam:'',verif:''};renderVista()}
+function refocusAdm(){var s=document.getElementById('fAdmTxt');if(s){s.focus();try{s.setSelectionRange(s.value.length,s.value.length)}catch(e){}}}
+function filtrosAdminHTML(tipo){
+ var fams=[''].concat(FAMILIAS);
+ var n=tipo==='centros'?filtraCentrosAdmin().length:filtraDocentesAdmin().length;
+ var h='<div class="filtros-bar"><div style="flex:2;min-width:180px"><label>Buscar</label><input id="fAdmTxt" value="'+esc(fAdm.txt)+'" placeholder="'+(tipo==='centros'?'Nombre, responsable, email o NIF…':'Nombre, especialidad, familia o lugar…')+'" oninput="fAdm.txt=this.value;renderVista();refocusAdm()"></div>';
+ if(tipo==='centros'){
+  h+='<div><label>Plan</label><select id="fAdmPlan" onchange="fAdm.plan=this.value;renderVista()"><option value="">Todos los planes</option><option value="basico"'+(fAdm.plan==='basico'?' selected':'')+'>Básico</option><option value="completo"'+(fAdm.plan==='completo'?' selected':'')+'>Completo</option></select></div>';
+ } else {
+  h+='<div><label>Familia</label><select id="fAdmFam" onchange="fAdm.fam=this.value;renderVista()">'+fams.map(function(f){return '<option '+(fAdm.fam===f?'selected':'')+'>'+(f||'Todas')+'</option>'}).join('')+'</select></div>'+
+  '<div><label>Llamamiento</label><select id="fAdmLlam" onchange="fAdm.llam=this.value;renderVista()"><option value="">Todos</option><option value="si"'+(fAdm.llam==='si'?' selected':'')+'>Visible</option><option value="no"'+(fAdm.llam==='no'?' selected':'')+'>No visible</option></select></div>'+
+  '<div><label>Verificado</label><select id="fAdmVer" onchange="fAdm.verif=this.value;renderVista()"><option value="">Todos</option><option value="si"'+(fAdm.verif==='si'?' selected':'')+'>Verificado</option><option value="no"'+(fAdm.verif==='no'?' selected':'')+'>Pendiente</option></select></div>';
+ }
+ h+='<button class="btn2 btn-limpiar" onclick="limpiarFiltrosAdmin()">Limpiar</button></div>';
+ if(n===0) h+='<div class="aviso">Ningún '+(tipo==='centros'?'centro':'docente')+' coincide con la búsqueda. Prueba a quitar filtros.</div>';
+ else h+='<p class="mut">'+n+' '+(tipo==='centros'?(n===1?'centro':'centros'):(n===1?'docente':'docentes'))+'</p>';
+ return h;
+}
+function adminHTML(){
+ if(tab!=='centros') centroSel=null;
+ if(tab!=='docentes') docenteSel=null;
+ if(tab==='centros'&&centroSel) return centroDetalleHTML(centroSel);
+ if(tab==='docentes'&&docenteSel) return docenteDetalleHTML(docenteSel);
+ if(tab==='centros') return '<h2>Centros</h2>'+filtrosAdminHTML('centros')+'<table><tr><th>Centro</th><th>Responsable</th><th>Plan</th><th>LOPD / Contrato</th><th>Contacto</th></tr>'+filtraCentrosAdmin().map(function(c){return '<tr><td>'+esc(c.nombre)+'<br><span class="mut">'+esc(c.mail)+'</span></td><td>'+esc(c.responsable)+'</td><td>'+esc(planNombre(c.plan))+'</td><td>'+esc(c.lopd)+' / '+esc(c.contrato)+'</td><td><button class="btn" onclick="verCentro(this)" data-id="'+c.id+'">Ver ficha</button> <button class="btn2" onclick="contactarAdmin(\'centro\',\'+c.id+\')">'+ICONS.chat+' Mensaje</button></td></tr>'}).join('')+'</table>';
+ if(tab==='docentes') return '<h2>Docentes</h2>'+filtrosAdminHTML('docentes')+'<table><tr><th>Docente</th><th>Familia</th><th>Precio</th><th>Verificado</th><th>Llamamiento</th><th>Contacto</th></tr>'+filtraDocentesAdmin().map(function(d){return '<tr><td>'+esc(d.nombre)+'<br><span class="mut">'+esc(d.esp)+'</span></td><td>'+esc(d.familia)+'</td><td>'+d.precio+' €/h</td><td>'+(d.verif?'Sí':'Pendiente')+'</td><td>'+(d.llamamiento===false?'<span class="pill o">No visible</span>':'<span class="pill v">Visible</span>')+'</td><td><button class="btn" onclick="verDocente(this)" data-id="'+d.id+'">Ver ficha</button> <button class="btn2" onclick="contactarAdmin(\'docente\',\'+d.id+\')">'+ICONS.chat+' Mensaje</button></td></tr>'}).join('')+'</table>';
+ if(tab==='ofertas') return '<h2>Ofertas</h2><div class="grid">'+S.ofertas.map(function(o){return tarjetaOferta(o,false)}).join('')+'</div>';
+ if(tab==='contrataciones') return contratacionHTML();
+ if(tab==='suscripciones') return '<h2>Suscripciones</h2><table><tr><th>Centro</th><th>Plan</th><th>Importe mensual</th></tr>'+S.centros.map(function(c){return '<tr><td>'+esc(c.nombre)+'</td><td>'+esc(planNombre(c.plan))+'</td><td><b>'+planPrecio(c.plan)+' €</b></td></tr>'}).join('')+'</table><p class="mut">Ingreso recurrente estimado de la demo: <b>'+S.centros.reduce(function(a,c){return a+planPrecio(c.plan)},0)+' €/mes</b>.</p>';
+ return panelHTML();
+}
+var DIAS=['L','M','X','J','V','S','D'];
+var DIAS_NOMBRE=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+function dispDef(){return {dias:['L','M','X','J','V'],desde:9,hasta:13}}
+function dispDiasTexto(d){
+ var disp=d.disp||dispDef(); var dias=disp.dias; var t='';
+ if(dias.length===5&&['L','M','X','J','V'].every(function(x){return dias.indexOf(x)>=0})) t='Lun a vie';
+ else if(dias.length===2&&dias.indexOf('S')>=0&&dias.indexOf('D')>=0) t='Fines de semana';
+ else t=dias.map(function(x){return DIAS_NOMBRE[DIAS.indexOf(x)]}).join(', ');
+ return t+' · '+disp.desde+':00–'+disp.hasta+':00';
+}
+function toggleDia(i){
+ var d=docente(); d.disp=d.disp||dispDef();
+ var dia=DIAS[i]; var ix=d.disp.dias.indexOf(dia);
+ if(ix>=0) d.disp.dias.splice(ix,1); else d.disp.dias.push(dia);
+ d.disp.dias.sort(function(a,b){return DIAS.indexOf(a)-DIAS.indexOf(b)});
+ d.dispo=dispDiasTexto(d); save(); toast('Disponibilidad actualizada: '+d.dispo); renderVista();
+}
+function setHora(cual,h){
+ var d=docente(); d.disp=d.disp||dispDef();
+ if(cual===0) d.disp.desde=h; else d.disp.hasta=h;
+ if(d.disp.desde>=d.disp.hasta){ if(cual===0) d.disp.hasta=d.disp.desde+1; else d.disp.desde=d.disp.hasta-1; }
+ d.dispo=dispDiasTexto(d); save(); toast('Horario actualizado: '+d.dispo); renderVista();
+}
+function dialHTML(cual){
+ var d=docente(); var disp=d.disp||dispDef(); var sel=cual===0?disp.desde:disp.hasta;
+ var cx=90,cy=90,r=66; var marks='';
+ for(var h=7;h<=20;h++){
+  var ang=((h-7)/14)*Math.PI*2-Math.PI/2;
+  var x=cx+Math.cos(ang)*r, y=cy+Math.sin(ang)*r; var on=h===sel;
+  marks+='<g onclick="setHora('+cual+','+h+')" style="cursor:pointer"><circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="12.5" fill="'+(on?'#2563eb':'#f1f5f9')+'" stroke="'+(on?'#2563eb':'#e2e8f0')+'"/><text x="'+x.toFixed(1)+'" y="'+(y+4).toFixed(1)+'" text-anchor="middle" font-size="11" font-weight="bold" fill="'+(on?'#fff':'#0f172a')+'">'+h+'</text></g>';
+ }
+ return '<div class="dial"><svg width="180" height="180" viewBox="0 0 180 180"><circle cx="90" cy="90" r="84" fill="#fff" stroke="#e5e7eb"/><circle cx="90" cy="90" r="32" fill="#eff6ff"/><text x="90" y="86" text-anchor="middle" font-size="22" font-weight="bold" fill="#2563eb">'+sel+':00</text><text x="90" y="102" text-anchor="middle" font-size="11" fill="#64748b">'+(cual===0?'Desde':'Hasta')+'</text>'+marks+'</svg></div>';
+}
+function toggleLlamamiento(){
+ var d=docente(); d.llamamiento=d.llamamiento===false?true:false; save();
+ toast(d.llamamiento?'Llamamiento activado: tu perfil vuelve a ser visible para los centros':'Llamamiento desactivado: tu perfil no aparece en las búsquedas');
+ renderVista();
+}
+function misFavs(){var d=docente();return (d.fav||[]).map(function(id){return S.ofertas.find(function(o){return o.id===id})}).filter(function(o){return !!o})}
+function favNoDisp(){return misFavs().filter(function(o){return o.estado!=='Abierta'}).length}
+function toggleFav(el){
+ var d=docente(); d.fav=d.fav||[]; var id=el.getAttribute('data-id');
+ var i=d.fav.indexOf(id);
+ if(i>=0){d.fav.splice(i,1);toast('Quitado de favoritos')}else{d.fav.push(id);toast('Añadido a favoritos')}
+ save(); renderVista();
+}
+function cerrarOferta(el){
+ var o=S.ofertas.find(function(x){return x.id===el.getAttribute('data-id')}); if(!o) return;
+ o.estado=o.estado==='Abierta'?'Cerrada':'Abierta'; save();
+ toast(o.estado==='Abierta'?'Oferta reabierta: vuelve al tablón':'Oferta cerrada: ya no aparece en el tablón');
+ renderVista();
+}
+function favoritosHTML(){
+ var favs=misFavs();
+ var noDisp=favs.filter(function(o){return o.estado!=='Abierta'});
+ var disp=favs.filter(function(o){return o.estado==='Abierta'});
+ var h='<h2>Mis favoritos</h2>';
+ if(!favs.length) return h+'<p class="mut">Aún no tienes favoritos. En el tablón, toca «Añadir a favoritos» en una oferta para guardarla aquí.</p>';
+ if(noDisp.length) h+='<div class="aviso">'+ICONS.alert+' Tienes <b>'+noDisp.length+' oferta'+(noDisp.length>1?'s':'')+' en favoritos que ya no '+(noDisp.length>1?'están':'está')+' disponible'+(noDisp.length>1?'s':'')+'</b>: salió del tablón. Puedes quitarla de favoritos con la estrella.</div>';
+ h+='<div class="grid">'+disp.map(function(o){return tarjetaOferta(o,true)}).join('')+noDisp.map(function(o){return '<div style="opacity:.8">'+tarjetaOferta(o,true)+'</div>'}).join('')+'</div>';
+ return h;
+}
+var calMes={y:0,m:0}; var calSel=null;
+function calEventos(){
+ var ev=[];
+ S.ofertas.forEach(function(o){
+  if(rol==='centro'&&o.centroId!==centroId) return;
+  if(rol==='docente'&&!(o.postulantes.indexOf(docenteId)>=0||S.contrataciones.some(function(k){return k.docenteId===docenteId&&k.ofertaId===o.id}))) return;
+  ev.push({fecha:o.inicio,titulo:o.titulo,tipo:'oferta',detalle:nombreCentro(o.centroId)+' · '+o.precio+' €/h'});
+ });
+ S.contrataciones.forEach(function(k){
+  if(rol==='centro'&&k.centroId!==centroId) return;
+  if(rol==='docente'&&k.docenteId!==docenteId) return;
+  ev.push({fecha:k.fecha,titulo:'Contratación: '+nombreDocente(k.docenteId),tipo:'contratacion',detalle:nombreCentro(k.centroId)+' · '+k.estado});
+ });
+ return ev;
+}
+function calNav(dir){calMes={y:calMes.m===0&&dir<0?calMes.y-1:(calMes.m===11&&dir>0?calMes.y+1:calMes.y),m:(calMes.m+dir+12)%12};renderVista()}
+function calSelDia(el){calSel=el.getAttribute('data-fecha');renderVista()}
+function calendarioHTML(){
+ var hoy=new Date();
+ if(!calMes.y) calMes={y:hoy.getFullYear(),m:hoy.getMonth()};
+ var fHoy=hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0')+'-'+String(hoy.getDate()).padStart(2,'0');
+ var primer=new Date(calMes.y,calMes.m,1);
+ var diasMes=new Date(calMes.y,calMes.m+1,0).getDate();
+ var inicio=(primer.getDay()+6)%7;
+ var nombres=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+ var evs=calEventos();
+ function evDia(f){return evs.filter(function(e){return e.fecha===f})}
+ function fstr(d){return calMes.y+'-'+String(calMes.m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0')}
+ var celdas='';
+ for(var i=0;i<inicio;i++) celdas+='<div class="cal-day vacio"></div>';
+ for(var d=1;d<=diasMes;d++){
+  var f=fstr(d); var ev=evDia(f);
+  celdas+='<div class="cal-day'+(f===fHoy?' hoy':'')+(calSel===f?' sel':'')+'" onclick="calSelDia(this)" data-fecha="'+f+'"><b>'+d+'</b>'+ev.slice(0,2).map(function(e){return '<span class="cal-ev '+e.tipo+'">'+esc(e.titulo)+'</span>'}).join('')+ev.slice(0,3).map(function(e){return '<span class="cal-dot '+e.tipo+'"></span>'}).join('')+(ev.length>2?'<span class="cal-mas">+'+(ev.length-2)+' más</span>':'')+'</div>';
+ }
+ var prox=evs.filter(function(e){return e.fecha>=fHoy}).sort(function(a,b){return a.fecha<b.fecha?-1:1}).slice(0,6);
+ var det='';
+ if(calSel){var ev=evDia(calSel);det='<div class="card" style="margin-top:14px"><h3>'+esc(calSel)+'</h3>'+(ev.length?ev.map(function(e){return '<p><span class="pill '+(e.tipo==='oferta'?'':'v')+'">'+(e.tipo==='oferta'?'Curso':'Contratación')+'</span> <b>'+esc(e.titulo)+'</b><br><span class="mut">'+esc(e.detalle)+'</span></p>'}).join(''):'<p class="mut">Sin eventos este día.</p>')+'</div>'}
+ return '<h2>Calendario</h2><div class="card"><div class="cal-nav"><button class="btn2" onclick="calNav(-1)">← Anterior</button><b>'+nombres[calMes.m]+' '+calMes.y+'</b><button class="btn2" onclick="calNav(1)">Siguiente →</button></div>'+
+ '<div class="cal-grid"><div class="cal-dow">L</div><div class="cal-dow">M</div><div class="cal-dow">X</div><div class="cal-dow">J</div><div class="cal-dow">V</div><div class="cal-dow">S</div><div class="cal-dow">D</div>'+celdas+'</div></div>'+
+ '<div class="card" style="margin-top:14px"><h3>Próximos eventos</h3>'+(prox.length?prox.map(function(e){return '<p>'+ICONS.calendar+' <b>'+esc(e.fecha)+'</b> — '+esc(e.titulo)+' <span class="mut">('+esc(e.detalle)+')</span></p>'}).join(''):'<p class="mut">No hay eventos próximos.</p>')+'</div>'+det;
+}
+var centroSel=null; var docenteSel=null;
+function verCentro(el){centroSel=el.getAttribute('data-id');tab='centros';render()}
+function volverCentros(){centroSel=null;tab='centros';render()}
+function verDocente(el){docenteSel=el.getAttribute('data-id');tab='docentes';render()}
+function volverDocentes(){docenteSel=null;tab='docentes';render()}
+function abrirChat(el){contactarAdmin(el.getAttribute('data-tipo'),el.getAttribute('data-id'))}
+function toggleLlamamientoAdmin(){
+ var d=S.docentes.find(function(x){return x.id===docenteSel}); if(!d) return;
+ d.llamamiento=d.llamamiento===false?true:false; save();
+ toast(d.llamamiento?'Llamamiento activado: '+d.nombre+' vuelve a ser visible para los centros':'Llamamiento desactivado: '+d.nombre+' no aparece en las búsquedas');
+ renderVista();
+}
+function kpiFijo(n,l){return '<div class="kpi"><b>'+n+'</b><span>'+l+'</span></div>'}
+function centroDetalleHTML(id){
+ var c=S.centros.find(function(x){return x.id===id}); if(!c) return '<h2>Centro no encontrado</h2><p><button class="btn2" onclick="volverCentros()">← Volver a Centros</button></p>';
+ var mis=S.ofertas.filter(function(o){return o.centroId===id});
+ var ks=S.contrataciones.filter(function(k){return k.centroId===id});
+ var fs=S.facturas.filter(function(f){return f.centroId===id});
+ var post=mis.reduce(function(a,o){return a+o.postulantes.length},0);
+ var pend=fs.filter(function(f){return f.estado==='Pendiente'}).reduce(function(a,f){return a+f.importe},0);
+ var tot=fs.reduce(function(a,f){return a+f.importe},0);
+ var chat=S.conversaciones.find(function(cv){return cv.admin&&cv.centroId===id});
+ var h='<p><button class="btn2" onclick="volverCentros()">← Volver a Centros</button></p>';
+ h+='<div class="card"><h2>'+esc(c.nombre)+' <span class="pill v">'+esc(planNombre(c.plan))+'</span></h2>'+
+ '<p><b>Responsable:</b> '+esc(c.responsable)+' · <b>NIF:</b> '+esc(c.nif)+'</p>'+
+ '<p>'+ICONS.phone+' '+esc(c.tel)+' · '+ICONS.mail+' '+esc(c.mail)+' · '+ICONS.pin+' '+esc(c.direccion)+'</p>'+
+ '<p><b>Cuenta corriente:</b> '+esc(c.cuenta)+'</p>'+
+ '<p><button class="btn2" onclick="abrirDocumento(this)" data-tipo="lopd" data-id="'+c.id+'">'+ICONS.file+' LOPD · '+esc(c.lopd)+'</button> <button class="btn2" onclick="abrirDocumento(this)" data-tipo="contrato" data-id="'+c.id+'">'+ICONS.file+' Contrato · '+esc(c.contrato)+'</button></p>'+
+ '<p><button class="btn" onclick="abrirChat(this)" data-tipo="centro" data-id="'+c.id+'">'+ICONS.chat+' Abrir conversación con el centro</button></p></div>';
+ h+='<div class="kpis" style="margin-top:14px">'+kpiFijo(mis.length,'Ofertas publicadas')+kpiFijo(post,'Postulaciones recibidas')+kpiFijo(ks.filter(function(k){return k.estado==='Contratado'}).length,'Docentes contratados')+kpiFijo(pend+' €','Pendiente de pago')+'</div>';
+ h+='<h3 style="margin-top:18px">Ofertas publicadas ('+mis.length+')</h3>'+(mis.length?'<div class="grid">'+mis.map(function(o){return tarjetaOferta(o,false)}).join('')+'</div>':'<p class="mut">Este centro aún no ha publicado ofertas.</p>');
+ h+='<h3 style="margin-top:18px">Docentes contratados ('+ks.length+')</h3>';
+ if(ks.length){ h+='<table><tr><th>Docente</th><th>Curso</th><th>Desde</th><th>Estado</th><th>Valoración</th></tr>'+ks.map(function(k){var o=oferta(k.ofertaId);return '<tr><td>'+esc(nombreDocente(k.docenteId))+'</td><td>'+esc(o?o.titulo:'Curso')+'</td><td>'+esc(k.fecha)+'</td><td>'+esc(k.estado)+'</td><td>'+(k.valCentro?k.valCentro+' '+ICONS.star:'aún sin valorar')+'</td></tr>'}).join('')+'</table>'; }
+ else h+='<p class="mut">Este centro aún no ha contratado docentes.</p>';
+ h+='<h3 style="margin-top:18px">Facturas ('+fs.length+' · total '+tot+' €)</h3>';
+ if(fs.length){ h+='<table><tr><th>Fecha</th><th>Concepto</th><th>Importe</th><th>Estado</th></tr>'+fs.map(function(f){return '<tr><td>'+esc(f.fecha)+'</td><td>'+esc(f.concepto)+'</td><td><b>'+f.importe+' €</b></td><td>'+esc(f.estado)+'</td></tr>'}).join('')+'</table>'; }
+ else h+='<p class="mut">Este centro no tiene facturas.</p>';
+ if(chat&&chat.msgs.length){ var last=chat.msgs[chat.msgs.length-1]; h+='<div class="card" style="margin-top:18px"><h3>Última conversación</h3><p class="mut">«'+esc(last.texto)+'» <span class="mut">('+esc(last.fecha)+')</span></p><p><button class="btn2" onclick="abrirChat(this)" data-tipo="centro" data-id="'+c.id+'">Ver conversación</button></p></div>'; }
+ return h;
+}
+function docenteDetalleHTML(id){
+ var d=S.docentes.find(function(x){return x.id===id}); if(!d) return '<h2>Docente no encontrado</h2><p><button class="btn2" onclick="volverDocentes()">← Volver a Docentes</button></p>';
+ var misPost=S.ofertas.filter(function(o){return o.postulantes.indexOf(id)>=0});
+ var ks=S.contrataciones.filter(function(k){return k.docenteId===id});
+ var fs=S.facturas.filter(function(f){return f.docenteId===id});
+ var ing=fs.reduce(function(a,f){return a+f.importe},0);
+ var h='<p><button class="btn2" onclick="volverDocentes()">← Volver a Docentes</button></p>';
+ h+='<div class="card"><h2>'+esc(d.nombre)+' '+(d.verif?'<span class="pill v">✓ Verificado</span>':'<span class="pill o">Pendiente de verificación</span>')+'</h2>'+
+ '<p><span class="pill">'+esc(d.familia)+'</span> <span class="pill">'+esc(d.modalidad)+'</span> <span class="pill">'+esc(d.lugar)+'</span> <span class="pill">'+esc(d.codigo)+'</span></p>'+
+ '<p><b>'+esc(d.esp)+'</b></p><p class="mut">'+esc(d.bio)+'</p>'+
+ '<p>'+ICONS.star+' '+d.val+' · '+d.exp+' años de experiencia · <b>'+d.precio+' €/hora</b> · '+esc(d.tipo)+'</p>'+
+ '<p>'+ICONS.phone+' '+esc(d.tel)+' · '+ICONS.mail+' '+esc(d.mail)+' · DNI: '+esc(d.dni)+'</p>'+
+ '<p>'+ICONS.cap+' '+esc(d.titulo)+'</p>'+
+ '<p class="mut">Disponibilidad: '+esc(d.dispo)+'</p>'+
+ '<div class="card" style="margin-top:12px;padding:14px"><div style="display:flex;align-items:center;gap:12px;justify-content:space-between"><div><b>'+(d.llamamiento===false?'Llamamiento desactivado':'Llamamiento activado')+'</b><br><span class="mut">Si está activado, el perfil aparece en las búsquedas de los centros. Desactívalo si el docente no está disponible durante un tiempo: sigue dado de alta, pero no lo encontrarán.</span></div><label class="switch"><input type="checkbox" '+(d.llamamiento===false?'':'checked')+' onchange="toggleLlamamientoAdmin()"><span class="slider"></span></label></div></div>'+
+ '<p><button class="btn" onclick="abrirChat(this)" data-tipo="docente" data-id="'+d.id+'">'+ICONS.chat+' Abrir conversación con el docente</button></p></div>';
+ h+='<div class="kpis" style="margin-top:14px">'+kpiFijo(misPost.length,'Postulaciones')+kpiFijo(ks.filter(function(k){return k.estado==='Contratado'}).length,'Cursos contratados')+kpiFijo(ing+' €','Facturado')+kpiFijo(fs.length,'Facturas')+'</div>';
+ h+='<h3 style="margin-top:18px">Postulaciones ('+misPost.length+')</h3>'+(misPost.length?'<div class="grid">'+misPost.map(function(o){return tarjetaOferta(o,false)}).join('')+'</div>':'<p class="mut">Este docente aún no se ha postulado a ninguna oferta.</p>');
+ h+='<h3 style="margin-top:18px">Contrataciones ('+ks.length+')</h3>';
+ if(ks.length){ h+='<table><tr><th>Centro</th><th>Curso</th><th>Desde</th><th>Estado</th><th>Valoración</th></tr>'+ks.map(function(k){var o=oferta(k.ofertaId);return '<tr><td>'+esc(nombreCentro(k.centroId))+'</td><td>'+esc(o?o.titulo:'Curso')+'</td><td>'+esc(k.fecha)+'</td><td>'+esc(k.estado)+'</td><td>'+(k.valCentro?k.valCentro+' '+ICONS.star:'aún sin valorar')+'</td></tr>'}).join('')+'</table>'; }
+ else h+='<p class="mut">Este docente aún no tiene contrataciones.</p>';
+ h+='<h3 style="margin-top:18px">Facturas ('+fs.length+' · total '+ing+' €)</h3>';
+ if(fs.length){ h+='<table><tr><th>Fecha</th><th>Concepto</th><th>Importe</th><th>Estado</th></tr>'+fs.map(function(f){return '<tr><td>'+esc(f.fecha)+'</td><td>'+esc(f.concepto)+'</td><td><b>'+f.importe+' €</b></td><td>'+esc(f.estado)+'</td></tr>'}).join('')+'</table>'; }
+ else h+='<p class="mut">Este docente no tiene facturas.</p>';
+ return h;
+}
+var docActual=null;
+function abrirDocumento(el){
+ var tipo=el.getAttribute('data-tipo');
+ var c=S.centros.find(function(x){return x.id===el.getAttribute('data-id')}); if(!c) return;
+ docActual={tipo:tipo,centro:c};
+ var m=document.getElementById('modalDoc'); if(!m){m=document.createElement('div');m.id='modalDoc';document.body.appendChild(m)}
+ m.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)cerrarDocumento()"><div class="modal-doc"><div class="modal-head"><b>'+(tipo==='lopd'?'Documento LOPD':'Contrato de servicio')+' — '+esc(c.nombre)+'</b><button class="btn2" onclick="cerrarDocumento()">✕</button></div><div class="modal-body">'+documentoHTML(tipo,c)+'</div><div class="modal-foot"><button class="btn2" onclick="descargarDocumento()">Descargar</button><button class="btn" onclick="cerrarDocumento()">Cerrar</button></div></div></div>';
+}
+function cerrarDocumento(){var m=document.getElementById('modalDoc');if(m)m.innerHTML='';docActual=null}
+function documentoHTML(tipo,c){
+ if(tipo==='lopd') return '<p class="mut">BUSCODOCENTE · Documento de protección de datos · Estado: '+esc(c.lopd)+'</p><h4>Documento LOPD</h4><p>En cumplimiento del Reglamento (UE) 2016/679 (RGPD) y de la Ley Orgánica 3/2018, <b>'+esc(c.nombre)+'</b> (NIF '+esc(c.nif)+', responsable '+esc(c.responsable)+') informa de que los datos personales de docentes y alumnos gestionados a través de BUSCODOCENTE se tratan únicamente para la selección, contratación y seguimiento de cursos.</p><p>Los datos no se ceden a terceros salvo obligación legal. Los interesados pueden ejercer sus derechos de acceso, rectificación, supresión, limitación, portabilidad y oposición escribiendo a '+esc(c.mail)+'.</p><p>El presente documento queda archivado en BUSCODOCENTE con fecha de registro y firma del responsable del centro.</p>';
+ return '<p class="mut">BUSCODOCENTE · Contrato de prestación de servicios · Estado: '+esc(c.contrato)+'</p><h4>Contrato de servicio</h4><p>Entre BUSCODOCENTE y <b>'+esc(c.nombre)+'</b> (NIF '+esc(c.nif)+'), se acuerda la prestación del servicio de selección de docentes y gestión de cursos en la plataforma.</p><p>Plan contratado: <b>'+esc(planNombre(c.plan))+'</b> ('+planPrecio(c.plan)+' €/mes). El centro puede publicar ofertas, contactar con docentes por mensajería interna y gestionar contrataciones y facturación desde su panel.</p><p>El contrato se renueva mensualmente y puede cancelarse en cualquier momento desde el panel. Firmado por el responsable del centro, '+esc(c.responsable)+'.</p>';
+}
+function descargarDocumento(){
+ if(!docActual) return; var c=docActual.centro;
+ var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>'+(docActual.tipo==='lopd'?'LOPD':'Contrato')+' - '+c.nombre+'</title></head><body style="font-family:sans-serif;max-width:640px;margin:40px auto;line-height:1.6">'+documentoHTML(docActual.tipo,c)+'</body></html>';
+ var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download=(docActual.tipo==='lopd'?'LOPD':'Contrato')+'-'+c.nombre.replace(/[^a-zA-Z0-9]/g,'-')+'.html'; a.click(); toast('Documento descargado');
+}
+function renderVista(){
+ var v=document.getElementById('vista'); var h='';
+ if(rol==='admin'){ h = tab==='panel'?panelHTML():(tab==='mensajeria'?mensajeriaHTML():(tab==='calendario'?calendarioHTML():adminHTML())); }
+ else if(rol==='centro'){
+  if(tab==='panel') h=panelHTML(); else if(tab==='seleccion') h=seleccionHTML(); else if(tab==='calendario') h=calendarioHTML(); else if(tab==='ofertas') h=ofertasCentroHTML();
+  else if(tab==='contratacion') h=contratacionHTML(); else if(tab==='seguimiento') h=seguimientoHTML(); else if(tab==='facturacion') h=facturacionHTML();
+  else if(tab==='mensajeria') h=mensajeriaHTML(); else if(tab==='perfil') h=perfilHTML(); else if(tab==='suscripcion') h=suscripcionHTML();
+ } else {
+  if(tab==='tablon') h=tablonHTML(); else if(tab==='favoritos') h=favoritosHTML(); else if(tab==='calendario') h=calendarioHTML(); else if(tab==='panel') h=panelHTML();
+  else if(tab==='postulaciones') h='<h2>Mis postulaciones</h2>'+(function(){var l=S.ofertas.filter(function(o){return o.postulantes.indexOf(docenteId)>=0});return l.length?'<div class="grid">'+l.map(function(o){return tarjetaOferta(o,true)}).join('')+'</div>':'<p class="mut">Aún no te has postulado a ningún curso. Ve al Tablón de ofertas.</p>'})();
+  else if(tab==='contratacion') h=contratacionHTML(); else if(tab==='seguimiento') h=seguimientoHTML(); else if(tab==='facturacion') h=facturacionHTML();
+  else if(tab==='mensajeria') h=mensajeriaHTML(); else if(tab==='perfil') h=perfilHTML();
+ }
+ v.innerHTML=h;
+}
+function render(){
+ if(session){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';}
+ else{document.getElementById('app').style.display='none';document.getElementById('login').style.display='flex';renderLogin();return;}
+ renderChrome();renderVista();
+}
+function postular(id){var o=oferta(id);if(o.postulantes.indexOf(docenteId)<0){o.postulantes.push(docenteId);save();toast('Te has postulado a: '+o.titulo);}render()}
+function contactar(did){
+ var ex=S.conversaciones.find(function(c){return !c.admin&&c.centroId===centroId&&c.docenteId===did});
+ if(!ex){ex={id:'m'+Date.now(),centroId:centroId,docenteId:did,ofertaId:null,msgs:[{de:'centro',texto:'Hola, nos interesa tu perfil y queremos hablar de una posible colaboración.',fecha:hoy()}]};S.conversaciones.push(ex)}
+ convId=ex.id;save();tab='mensajeria';render();
+}
+function contratar(did){
+ var k={id:'k'+Date.now(),ofertaId:null,centroId:centroId,docenteId:did,estado:'En negociación',fecha:hoy(),seguimiento:[],valCentro:null};
+ S.contrataciones.push(k);save();toast('Selección creada: en negociación');tab='contratacion';render();
+}
+function cambiarEstado(id,est){var k=S.contrataciones.find(function(x){return x.id===id});if(k){k.estado=est;save()}render()}
+function valorar(id){var k=S.contrataciones.find(function(x){return x.id===id});var s=document.getElementById('val-'+id);if(k&&s){k.valCentro=Number(s.value);save();alert('Valoración guardada: '+k.valCentro+' / 5')}render()}
+function addSeg(id){var k=S.contrataciones.find(function(x){return x.id===id});var t=document.getElementById('seg-'+id);if(k&&t.value.trim()){k.seguimiento.push({fecha:hoy(),texto:t.value.trim()});save()}render()}
+function emitirFactura(){var c=document.getElementById('facCentro').value;var co=document.getElementById('facConc').value;var im=Number(document.getElementById('facImp').value);if(!co||!im){alert('Rellena concepto e importe.');return}S.facturas.push({id:'f'+Date.now(),tipo:'Docente a centro',centroId:c,docenteId:docenteId,concepto:co,importe:im,fecha:hoy(),estado:'Pendiente'});save();alert('Factura enviada al centro.');render()}
+function enviarMsg(){var t=document.getElementById('nMsg');var conv=S.conversaciones.find(function(c){return c.id===convId});if(conv&&t.value.trim()){conv.msgs.push({de:rol,texto:t.value.trim(),fecha:hoy()});save()}renderVista()}
+function simularRespuesta(){var conv=S.conversaciones.find(function(c){return c.id===convId});if(conv){var otro=conv.admin?(conv.docenteId?'docente':'centro'):(rol==='docente'?'centro':'docente');conv.msgs.push({de:otro,texto:'Gracias por tu mensaje, lo revisamos y te confirmamos en breve por aquí mismo.',fecha:hoy()});save()}renderVista()}
+function crearOferta(){var t=document.getElementById('nTitulo').value.trim();if(!t){alert('Pon un título al curso.');return}S.ofertas.push({id:'o'+Date.now(),centroId:centroId,titulo:t,familia:document.getElementById('nFam').value,modalidad:document.getElementById('nMod').value,lugar:document.getElementById('nLug').value||'Online',horas:Number(document.getElementById('nHor').value)||0,precio:Number(document.getElementById('nPre').value)||0,inicio:document.getElementById('nIni').value||hoy(),desc:document.getElementById('nDesc').value,postulantes:[],estado:'Abierta'});save();alert('Oferta publicada. Ya aparece en el tablón de los docentes.');render()}
+function cambiarPlan(p){centro().plan=p;S.facturas.push({id:'f'+Date.now(),tipo:'Suscripción BUSCODOCENTE',centroId:centroId,docenteId:null,concepto:'Plan '+(p==='completo'?'Completo':'Básico')+' — '+new Date().toLocaleDateString('es-ES',{month:'long',year:'numeric'}),importe:planPrecio(p),fecha:hoy(),estado:'Pendiente'});save();render()}
+function guardarPerfilCentro(){var c=centro();c.nombre=document.getElementById('pNombre').value;c.nif=document.getElementById('pNif').value;c.responsable=document.getElementById('pResp').value;c.tel=document.getElementById('pTel').value;c.mail=document.getElementById('pMail').value;c.direccion=document.getElementById('pDir').value;c.cuenta=document.getElementById('pCta').value;save();alert('Perfil del centro guardado.');render()}
+function guardarPerfilDocente(){var d=docente();d.nombre=document.getElementById('dNombre').value;d.dni=document.getElementById('dDni').value;d.tel=document.getElementById('dTel').value;d.mail=document.getElementById('dMail').value;d.familia=document.getElementById('dFam').value;d.esp=document.getElementById('dEsp').value;d.lugar=document.getElementById('dLug').value;d.modalidad=document.getElementById('dMod').value;d.exp=Number(document.getElementById('dExp').value);d.precio=Number(document.getElementById('dPre').value);d.tipo=document.getElementById('dTip').value;d.titulo=document.getElementById('dTit').value;d.bio=document.getElementById('dBio').value;save();alert('Perfil docente guardado. Ya apareces con estos filtros en las búsquedas.');render()}
+if(session){render()}else{renderLogin()}
+</script>
+</body>
+</html>
