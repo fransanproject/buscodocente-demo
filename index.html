@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>BUSCODOCENTE v10 — Centros de formación y docentes</title>
+<title>BUSCODOCENTE v11 — Centros de formación y docentes</title>
 <style>
 :root{color-scheme:light;--azul:#0f3d46;--teal:#5f8f95;--azul2:#e6eef0;--verde:#16a34a;--verde2:#f0fdf4;--naranja:#b45309;--gris:#f1f5f9;--borde:#e5e7eb;--texto:#0f172a;--mut:#64748b}
 *{box-sizing:border-box} :focus-visible{outline:2px solid #0f3d46;outline-offset:2px} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--texto);line-height:1.45}
@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;background:#fff} th,td{text-align:left
 .msgs{padding:14px;min-height:280px;max-height:420px;overflow:auto} .msg{max-width:80%;padding:10px 12px;border-radius:12px;margin:8px 0;background:var(--gris)} .msg.yo{margin-left:auto;background:var(--azul2)} .chat-head{padding:12px 16px;border-bottom:1px solid var(--borde);background:#fff}
 footer{color:var(--mut);font-size:13px;text-align:center;padding:24px}
 .plan{border:2px solid var(--borde);border-radius:16px;padding:16px} .plan.sel{border-color:var(--azul);background:var(--azul2)}
-/* ===== v10: iconos SVG, buscador admin, visor de documentos ===== */
+/* ===== v11: iconos SVG, buscador admin, visor de documentos ===== */
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f4f6f8;padding:24px}
 .login-card{width:400px;max-width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:36px 32px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
 .login-card img{display:block;height:56px;width:auto;margin:0 auto 10px}
@@ -58,6 +58,50 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:24px}
 #sidebar .logo .logo-text{font-weight:900;color:#0f3d46;letter-spacing:1.5px;font-size:15px;white-space:nowrap;flex-shrink:0}
 body.sb-collapsed #sidebar .logo .logo-text{display:none}
 .gest-int{border-top:1px dashed #e2e8f0;margin-top:10px;padding-top:8px}
+/* ===== v11: jerarquía visual (fondo gris, tarjetas con banda, títulos y píldoras con color) ===== */
+body{line-height:1.55}
+#main{background:#f4f6f8;min-height:100vh}
+#topbar{box-shadow:0 1px 4px rgba(15,61,70,.08)}
+#topbar b{font-size:17px;color:#0f3d46}
+#vista h2{font-size:22px;font-weight:800;color:#0f3d46;margin:4px 0 14px;padding-left:12px;border-left:5px solid #0f3d46}
+.card{background:#fff;border:1px solid #d7e0e3;border-top:3px solid #cfdee0;border-radius:18px;box-shadow:0 2px 10px rgba(15,61,70,.08)}
+.card h3{margin:0 0 8px;font-size:18px;font-weight:800;color:#0f3d46;line-height:1.3}
+.card-docente{border-top:4px solid #0f3d46}
+.card-docente>h3{margin:-20px -20px 12px;padding:14px 20px;background:#e6eef0;border-radius:14px 14px 0 0}
+.card-oferta{border-top:4px solid #5f8f95}
+.card-oferta>h3{margin:-20px -20px 12px;padding:14px 20px;background:#eef4f5;border-radius:14px 14px 0 0}
+.pill{background:#eef2f3;border-color:#d7e0e3;color:#334155}
+.pill.fam{background:#0f3d46;border-color:#0f3d46;color:#fff}
+.pill.area{background:#e6eef0;border-color:#cfdee0;color:#0b2f37}
+.pill.v{background:#dcfce7;border-color:#86efac;color:#15803d}
+.pill.o{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+label{display:block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#5f8f95;margin:14px 0 5px}
+input,select,textarea{border:1.5px solid #cbd5e1;border-radius:10px;padding:11px 12px}
+input:focus,select:focus,textarea:focus{border-color:#0f3d46;box-shadow:0 0 0 3px rgba(15,61,70,.15);outline:none}
+.filtros-bar{background:#e9f1f2;border:1px solid #cfdee0;border-radius:16px;padding:14px}
+.filtros-bar label{margin:0 0 4px}
+.filtros-bar select,.filtros-bar input{padding:10px}
+.kpi{border-top:4px solid #5f8f95;box-shadow:0 2px 10px rgba(15,61,70,.08)}
+.kpi b{font-size:32px;color:#0f3d46}
+.kpi span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#64748b}
+button.btn{box-shadow:0 2px 6px rgba(15,61,70,.25)}
+button.btn2{background:#f8fafc;border:1.5px solid #cbd5e1}
+button.btn2:hover{border-color:#0f3d46;color:#0f3d46}
+button.btnv{box-shadow:0 2px 6px rgba(22,163,74,.3)}
+table th{background:#0f3d46;color:#fff;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:11px 12px}
+table td{padding:11px 12px}
+table tr:nth-child(even) td{background:#f6f9f9}
+#sidebar nav button.act{background:#0f3d46;color:#fff}
+#sidebar .sec{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+#sidebar .logo{border-bottom:1px solid #e5e7eb}
+.plan.sel{box-shadow:0 4px 16px rgba(15,61,70,.15)}
+.login-card{box-shadow:0 8px 30px rgba(15,61,70,.15);border-top:4px solid #0f3d46}
+.login-tabs .role-card{padding:14px 6px}
+.login-tabs .role-card.act{box-shadow:0 4px 12px rgba(15,61,70,.18)}
+.role-ico{display:block;color:#5f8f95;margin-bottom:6px}
+.role-ico .ic svg{width:26px;height:26px}
+.login-tabs .role-card.act .role-ico{color:#0f3d46}
+
 
 .login-hint{font-size:13px;text-align:center}
 .demo-account{background:var(--gris);border-radius:10px;padding:10px 12px;font-size:13px;margin:10px 0}
@@ -125,8 +169,8 @@ body.sb-collapsed #sidebar nav button .bdg{display:none}
     <div id="topbar"></div>
     <div class="wrap" style="max-width:1180px">
       <div id="vista"></div>
-      <div class="aviso"><b>Cómo probar esta v10 en 2 minutos:</b> 1) Entra como <b>empresa contratadora</b> y ve a <b>Selección docente</b>, filtra por área FUNDAE y pulsa <b>Desbloquear candidato · 1 crédito</b>. 2) Cierra sesión y entra como <b>docente</b>: verás esa contratación en <b>Contratación</b> y en <b>Mensajería</b>. 3) Como docente contratado, añade un registro en <b>Seguimiento</b> y el centro lo ve al instante. 4) En <b>Suscripción</b> cambia de plan y verás cómo se ocultan o se muestran los datos de contacto. <button class="btn2" onclick="resetDemo()">Restablecer demo</button></div>
-      <footer>BUSCODOCENTE v10 · Prototipo funcional sin backend: los datos son de demostración y viven en tu navegador. No se intercambian datos de contacto fuera de la plataforma antes de la contratación.</footer>
+      <div class="aviso"><b>Cómo probar esta v11 en 2 minutos:</b> 1) Entra como <b>empresa contratadora</b> y ve a <b>Selección docente</b>, filtra por área FUNDAE y pulsa <b>Desbloquear candidato · 1 crédito</b>. 2) Cierra sesión y entra como <b>docente</b>: verás esa contratación en <b>Contratación</b> y en <b>Mensajería</b>. 3) Como docente contratado, añade un registro en <b>Seguimiento</b> y el centro lo ve al instante. 4) En <b>Suscripción</b> cambia de plan y verás cómo se ocultan o se muestran los datos de contacto. <button class="btn2" onclick="resetDemo()">Restablecer demo</button></div>
+      <footer>BUSCODOCENTE v11 · Prototipo funcional sin backend: los datos son de demostración y viven en tu navegador. No se intercambian datos de contacto fuera de la plataforma antes de la contratación.</footer>
     </div>
   </div>
 </div></div>
@@ -179,10 +223,10 @@ var SEED={
  ]
 };
 var S;
-try{S=JSON.parse(localStorage.getItem('buscodocente_v10'))||null}catch(e){S=null}
+try{S=JSON.parse(localStorage.getItem('buscodocente_v11'))||null}catch(e){S=null}
 if(!S||!S.docentes){S=JSON.parse(JSON.stringify(SEED))}
-function save(){try{localStorage.setItem('buscodocente_v10',JSON.stringify(S))}catch(e){}}
-function resetDemo(){localStorage.removeItem('buscodocente_v10');location.reload()}
+function save(){try{localStorage.setItem('buscodocente_v11',JSON.stringify(S))}catch(e){}}
+function resetDemo(){localStorage.removeItem('buscodocente_v11');location.reload()}
 var rol='centro', tab='panel', centroId='c1', docenteId='d1', convId='m1', filtro={fam:'',area:'',cod:'',mod:'',prov:'',franja:'',fecha:'',fechaDesde:'',tipo:'',verif:false,fav:false,max:'',text:''};
 function centro(){return S.centros.find(function(c){return c.id===centroId})||S.centros[0]}
 function docente(){return S.docentes.find(function(d){return d.id===docenteId})||S.docentes[0]}
@@ -198,9 +242,9 @@ function tabsPorRol(){
  if(rol==='docente') return [['tablon','Tablón de ofertas'],['postulaciones','Mis postulaciones'],['favoritos','Favoritos'],['calendario','Calendario'],['panel','Panel'],['contratacion','Contratación'],['seguimiento','Seguimiento'],['facturacion','Facturación'],['mensajeria','Mensajería'],['perfil','Mi perfil']];
  return [['panel','Panel'],['centros','Centros'],['docentes','Docentes'],['ofertas','Ofertas'],['contrataciones','Contrataciones'],['suscripciones','Suscripciones'],['calendario','Calendario'],['mensajeria','Mensajería']];
 }
-/* ===== v10: sesión, login, sidebar, gráficas ===== */
+/* ===== v11: sesión, login, sidebar, gráficas ===== */
 var loginRol='centro';
-var session=null; try{session=JSON.parse(localStorage.getItem('buscodocente_session_v10'))}catch(e){}
+var session=null; try{session=JSON.parse(localStorage.getItem('buscodocente_session_v11'))}catch(e){}
 if(session){rol=session.rol; if(session.centroId) centroId=session.centroId; if(session.docenteId) docenteId=session.docenteId; tab=rol==='docente'?'tablon':'panel';}
 function toast(m){var t=document.getElementById('toast'); if(!t) return; t.textContent=m; t.style.display='block'; setTimeout(function(){t.style.display='none'},2600)}
 function barChart(rows,color){var max=Math.max.apply(null,rows.map(function(r){return r[1]}).concat([1]));return rows.map(function(r){return '<div class="bar-row"><span class="bl">'+esc(r[0])+'</span><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(r[1]/max*100)+'%;background:'+(color||'#0f3d46')+'"></div></div><span class="bv">'+r[1]+'</span></div>'}).join('')}
@@ -212,7 +256,7 @@ function logoFallback(){var i=document.getElementById('loginLogo');if(i)i.style.
 function renderLogin(){
  var lg=document.getElementById('loginLogo'); if(lg) lg.src=LOGO_BD;
  var lt=document.getElementById('loginTabs'); if(!lt) return;
- lt.innerHTML=[['admin','Administrador','Acceso a toda la plataforma'],['docente','Docente','Busca cursos y postúlate'],['centro','Empresa contratadora','Publica cursos y selecciona docentes']].map(function(r){return '<button class="role-card'+(loginRol===r[0]?' act':'')+'" data-rol="'+r[0]+'" onclick="elegirRol(this)"><b>'+r[1]+'</b><span>'+r[2]+'</span></button>'}).join('');
+ lt.innerHTML=[['admin','Administrador','Acceso a toda la plataforma',ICONS.users],['docente','Docente','Busca cursos y postúlate',ICONS.cap],['centro','Empresa contratadora','Publica cursos y selecciona docentes',ICONS.building]].map(function(r){return '<button class="role-card'+(loginRol===r[0]?' act':'')+'" data-rol="'+r[0]+'" onclick="elegirRol(this)"><span class="role-ico">'+r[3]+'</span><b>'+r[1]+'</b><span>'+r[2]+'</span></button>'}).join('');
  var acc=loginAccounts(); document.getElementById('loginAccount').innerHTML=acc.map(function(a){return '<option value="'+a.id+'">'+esc(a.label)+'</option>'}).join('');
  var em=document.getElementById('loginEmail'); if(!em.value) em.value = loginRol==='admin'?'admin@buscodocente.es':(loginRol==='centro'?centro().mail:docente().mail);
  var ps=document.getElementById('loginPass'); if(!ps.value) ps.value='demo123';
@@ -225,11 +269,11 @@ function doLogin(){
  rol=loginRol; tab=rol==='docente'?'tablon':'panel';
  var acc=document.getElementById('loginAccount').value;
  if(rol==='centro') centroId=acc; if(rol==='docente') docenteId=acc;
- var prevSesion=null; try{prevSesion=JSON.parse(localStorage.getItem('buscodocente_session_v10'))}catch(e){}
- session={rol:rol,centroId:centroId,docenteId:docenteId,email:em}; try{localStorage.setItem('buscodocente_session_v10',JSON.stringify(session))}catch(e){}
+ var prevSesion=null; try{prevSesion=JSON.parse(localStorage.getItem('buscodocente_session_v11'))}catch(e){}
+ session={rol:rol,centroId:centroId,docenteId:docenteId,email:em}; try{localStorage.setItem('buscodocente_session_v11',JSON.stringify(session))}catch(e){}
  toast('Sesión iniciada como '+({centro:'centro',docente:'docente',admin:'administrador'})[rol]); if(prevSesion&&prevSesion.rol===rol&&((rol==='centro'&&prevSesion.centroId===centroId)||(rol==='docente'&&prevSesion.docenteId===docenteId)||rol==='admin')) toast('Sesión anterior cerrada: solo puede haber 1 sesión activa por usuario.'); render();
 }
-function logout(){centroSel=null;docenteSel=null;session=null; try{localStorage.removeItem('buscodocente_session_v10')}catch(e){} document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; renderLogin()}
+function logout(){centroSel=null;docenteSel=null;session=null; try{localStorage.removeItem('buscodocente_session_v11')}catch(e){} document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; renderLogin()}
 function toggleSidebar(){document.body.classList.toggle('sb-collapsed'); try{localStorage.setItem('buscodocente_sb',document.body.classList.contains('sb-collapsed')?'1':'0')}catch(e){}}
 try{if(localStorage.getItem('buscodocente_sb')==='1') document.body.classList.add('sb-collapsed')}catch(e){}
 function exportDocentesCSV(){toast('La exportación masiva está bloqueada en todos los planes para proteger los datos de los docentes. La descarga del expediente solo se activa con el candidato desbloqueado y contratado.');}
@@ -269,7 +313,7 @@ function renderChrome(){
  var who= rol==='admin'?'Administrador':(rol==='centro'?centro().nombre:docente().nombre);
  var sub= rol==='admin'?'Acceso a todo':(rol==='centro'?planNombre(centro().plan):docente().esp);
  var secs={}; menuItems().forEach(function(m){(secs[m[3]]=secs[m[3]]||[]).push(m)});
- sb.innerHTML='<div class="logo"><img class="mark-img" src="'+LOGO_MARK+'" alt="B"> <span class="logo-text">BUSCODOCENTE</span><span class="mark">B</span> <span class="badge">v10</span></div><nav>'+Object.keys(secs).map(function(sec){return '<div class="sec">'+sec+'</div>'+secs[sec].map(function(m){return '<button class="'+(tab===m[1]?'act':'')+'" onclick="tab=\''+m[1]+'\';centroSel=null;docenteSel=null;document.body.classList.remove(\'sb-open\');render()"><span class="ico">'+m[2]+'</span><span class="lbl n">'+m[0]+'</span>'+(m[4]?'<span class="bdg">'+m[4]+'</span>':'')+'</button>'}).join('')}).join('')+'</nav><div class="userbox"><b class="lbl">'+esc(who)+'</b><span class="lbl">'+esc(sub)+'</span><p style="margin:8px 0 0"><button class="btn2" style="width:100%" onclick="logout()">Cerrar sesión</button></p></div>';
+ sb.innerHTML='<div class="logo"><img class="mark-img" src="'+LOGO_MARK+'" alt="B"> <span class="logo-text">BUSCODOCENTE</span><span class="mark">B</span> <span class="badge">v11</span></div><nav>'+Object.keys(secs).map(function(sec){return '<div class="sec">'+sec+'</div>'+secs[sec].map(function(m){return '<button class="'+(tab===m[1]?'act':'')+'" onclick="tab=\''+m[1]+'\';centroSel=null;docenteSel=null;document.body.classList.remove(\'sb-open\');render()"><span class="ico">'+m[2]+'</span><span class="lbl n">'+m[0]+'</span>'+(m[4]?'<span class="bdg">'+m[4]+'</span>':'')+'</button>'}).join('')}).join('')+'</nav><div class="userbox"><b class="lbl">'+esc(who)+'</b><span class="lbl">'+esc(sub)+'</span><p style="margin:8px 0 0"><button class="btn2" style="width:100%" onclick="logout()">Cerrar sesión</button></p></div>';
  var tb=document.getElementById('topbar'); if(tb) tb.innerHTML='<button class="btn2" onclick="if(window.innerWidth<=820){document.body.classList.toggle(\'sb-open\')}else{toggleSidebar()}">'+ICONS.menu+'</button><b>'+esc({panel:'Panel',seleccion:'Selección docente',ofertas:rol==='centro'?'Mis ofertas':'Ofertas',tablon:'Tablón de ofertas',postulaciones:'Mis postulaciones',contratacion:'Contratación',seguimiento:'Seguimiento',facturacion:'Facturación',mensajeria:'Mensajería',perfil:'Mi perfil',suscripcion:'Suscripción',centros:'Centros',docentes:'Docentes',contrataciones:'Contrataciones',suscripciones:'Suscripciones',favoritos:'Favoritos',calendario:'Calendario'}[tab]||'Panel')+'</b>'+(tab==='seleccion'||tab==='tablon'?'<div class="search"><input id="topSearch" placeholder="Buscar docente, curso o centro…" value="'+esc(filtro.text||'')+'" oninput="filtro.text=this.value;renderVista()"></div>':'')+'<button class="bell" title="Mensajes sin leer" onclick="tab=\'mensajeria\';render()">'+ICONS.bell+'<i>'+unreadCount()+'</i></button><span class="mut" style="white-space:nowrap">'+esc(who)+'</span>';
 }
 function setRol(r){rol=r;tab='panel';render()}
@@ -395,7 +439,7 @@ var AREAS=[
 function areaDe(cod){return AREAS.find(function(x){return x.c===cod})||null}
 function areaNombre(cod){var a=areaDe(cod);return a?(a.c+' · '+a.a):cod}
 
-/* ===== v10: créditos y desbloqueo (doc perfil_cliente_y_cuotas) ===== */
+/* ===== v11: créditos y desbloqueo (doc perfil_cliente_y_cuotas) ===== */
 function creditosPlan(p){return p==='premium'?20:5}
 function estaDesbloqueado(did){var c=centro();return !!(c&&(c.desbloq||[]).indexOf(did)>=0)}
 function diasDesde(f){if(!f)return null;return Math.floor((new Date(hoy())-new Date(f))/86400000)}
@@ -508,8 +552,8 @@ if(!contratadoCon(d.id)) acciones+='<p class="mut">La descarga del expediente se
    }
    acciones+='<p><button class="btn" onclick="verFicha(\''+d.id+'\')">'+(fichaAbierta===d.id?'Ocultar ficha':'Ver ficha completa')+'</button> <button class="btn" onclick="contactar(\''+d.id+'\')" '+(desbloq?'':'disabled')+'>'+ICONS.chat+' Contactar</button> <button class="btnv" onclick="contratar(\''+d.id+'\')">Contratar / Seleccionar</button></p><p class="mut">El contacto es por mensajería interna de BUSCODOCENTE. La exportación masiva y la copia de fichas están bloqueadas.</p>';
  }
- return '<div class="card no-copy" oncontextmenu="return false"><h3>'+nombre+' '+(d.verif?'<span class="pill v">✓ Verificado</span>':'<span class="pill o">Pendiente de verificación</span>')+' '+(d.validacion==='Verificada'?'<span class="pill v">Documentación verificada</span>':'<span class="pill o">Documentación pendiente</span>')+'</h3>'+
- '<p><span class="pill">'+esc(d.familia)+'</span> <span class="pill">'+esc(areaNombre(d.areaCod))+'</span> <span class="pill">'+(d.modalidades||[d.modalidad]).join(' · ')+'</span> <span class="pill">'+esc(d.municipio||d.lugar)+'</span> '+semaforoPill(d)+'</p>'+
+ return '<div class="card no-copy card-docente" oncontextmenu="return false"><h3>'+nombre+' '+(d.verif?'<span class="pill v">✓ Verificado</span>':'<span class="pill o">Pendiente de verificación</span>')+' '+(d.validacion==='Verificada'?'<span class="pill v">Documentación verificada</span>':'<span class="pill o">Documentación pendiente</span>')+'</h3>'+
+ '<p><span class="pill fam">'+esc(d.familia)+'</span> <span class="pill area">'+esc(areaNombre(d.areaCod))+'</span> <span class="pill">'+(d.modalidades||[d.modalidad]).join(' · ')+'</span> <span class="pill">'+esc(d.municipio||d.lugar)+'</span> '+semaforoPill(d)+'</p>'+
  '<p><b>'+esc(d.esp)+'</b></p><p class="mut">'+esc(d.bio)+'</p>'+
  '<p>'+ICONS.star+' '+d.val+' · '+d.expProf+' años de experiencia profesional · '+(d.horasDoc||0)+' h docentes · '+esc(d.regimen)+'</p>'+tarifa+dispTxt+docsTxt+contacto+cvBloque+fichaBloque+acciones+'</div>';
 }
@@ -518,7 +562,7 @@ function tarjetaOferta(o,paraDocente){
  var c=nombreCentro(o.centroId);
  var esFav=paraDocente&&(docente().fav||[]).indexOf(o.id)>=0;
  var noDisp=o.estado!=='Abierta';
- return '<div class="card"><h3>'+esc(o.titulo)+'</h3><p><span class="pill">'+esc(o.familia)+'</span> <span class="pill">'+esc(areaNombre(o.areaCod))+'</span> <span class="pill">'+esc(o.modalidad)+'</span> <span class="pill">'+esc(o.lugar)+'</span> <span class="pill">'+esc(o.franja||'')+'</span> <span class="pill '+(noDisp?'o':'v')+'">'+esc(o.estado)+'</span>' + (o.alerta&&paraDocente&&areaDe(o.areaCod)&&areaDe(o.areaCod).f===docente().familia?' <span class="pill v">'+ICONS.bell+' Alerta directa</span>':'') + '</p>'+
+ return '<div class="card card-oferta"><h3>'+esc(o.titulo)+'</h3><p><span class="pill fam">'+esc(o.familia)+'</span> <span class="pill area">'+esc(areaNombre(o.areaCod))+'</span> <span class="pill">'+esc(o.modalidad)+'</span> <span class="pill">'+esc(o.lugar)+'</span> <span class="pill">'+esc(o.franja||'')+'</span> <span class="pill '+(noDisp?'o':'v')+'">'+esc(o.estado)+'</span>' + (o.alerta&&paraDocente&&areaDe(o.areaCod)&&areaDe(o.areaCod).f===docente().familia?' <span class="pill v">'+ICONS.bell+' Alerta directa</span>':'') + '</p>'+
  '<p class="mut">Centro: '+esc(c)+' · Inicio: '+esc(o.inicio)+' · '+o.horas+' h · '+o.precio+' €/hora</p><p>'+esc(o.desc)+'</p>'+
  (paraDocente?'<p><button class="btn" onclick="postular(\''+o.id+'\')" '+((o.postulantes.indexOf(docenteId)>=0||noDisp)?'disabled':'')+'>'+(o.postulantes.indexOf(docenteId)>=0?'✓ Ya te has postulado':'Postularme a este curso')+'</button> <button class="btn2 fav-btn" onclick="toggleFav(this)" data-id="'+o.id+'">'+(esFav?ICONS.starFill+' En favoritos':ICONS.star+' Añadir a favoritos')+'</button></p>'+
  (noDisp?'<p><span class="pill o">'+ICONS.alert+' Ya no está disponible</span> <span class="mut">Esta oferta salió del tablón.</span></p>':''):
