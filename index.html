@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>BUSCODOCENTE v12 — Centros de formación y docentes</title>
+<title>BUSCODOCENTE v13 — Centros de formación y docentes</title>
 <style>
 :root{color-scheme:light;--azul:#0f3d46;--teal:#5f8f95;--azul2:#e6eef0;--verde:#16a34a;--verde2:#f0fdf4;--naranja:#b45309;--gris:#f1f5f9;--borde:#e5e7eb;--texto:#0f172a;--mut:#64748b}
 *{box-sizing:border-box} :focus-visible{outline:2px solid #0f3d46;outline-offset:2px} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--texto);line-height:1.45}
@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;background:#fff} th,td{text-align:left
 .msgs{padding:14px;min-height:280px;max-height:420px;overflow:auto} .msg{max-width:80%;padding:10px 12px;border-radius:12px;margin:8px 0;background:var(--gris)} .msg.yo{margin-left:auto;background:var(--azul2)} .chat-head{padding:12px 16px;border-bottom:1px solid var(--borde);background:#fff}
 footer{color:var(--mut);font-size:13px;text-align:center;padding:24px}
 .plan{border:2px solid var(--borde);border-radius:16px;padding:16px} .plan.sel{border-color:var(--azul);background:var(--azul2)}
-/* ===== v12: iconos SVG, buscador admin, visor de documentos ===== */
+/* ===== v13: iconos SVG, buscador admin, visor de documentos ===== */
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f4f6f8;padding:24px}
 .login-card{width:400px;max-width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:36px 32px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
 .login-card img{display:block;height:56px;width:auto;margin:0 auto 10px}
@@ -58,7 +58,7 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:24px}
 #sidebar .logo .logo-text{font-weight:900;color:#0f3d46;letter-spacing:1.5px;font-size:15px;white-space:nowrap;flex-shrink:0}
 body.sb-collapsed #sidebar .logo .logo-text{display:none}
 .gest-int{border-top:1px dashed #e2e8f0;margin-top:10px;padding-top:8px}
-/* ===== v12: jerarquía visual (fondo gris, tarjetas con banda, títulos y píldoras con color) ===== */
+/* ===== v13: jerarquía visual (fondo gris, tarjetas con banda, títulos y píldoras con color) ===== */
 body{line-height:1.55}
 #main{background:#f4f6f8;min-height:100vh}
 #topbar{box-shadow:0 1px 4px rgba(15,61,70,.08)}
@@ -169,8 +169,8 @@ body.sb-collapsed #sidebar nav button .bdg{display:none}
     <div id="topbar"></div>
     <div class="wrap" style="max-width:1180px">
       <div id="vista"></div>
-      <div class="aviso"><b>Cómo probar esta v12 en 2 minutos:</b> 1) Entra como <b>empresa contratadora</b> y ve a <b>Selección docente</b>, filtra por área FUNDAE y pulsa <b>Desbloquear candidato · 1 crédito</b>. 2) Cierra sesión y entra como <b>docente</b>: verás esa contratación en <b>Contratación</b> y en <b>Mensajería</b>. 3) Como docente contratado, añade un registro en <b>Seguimiento</b> y el centro lo ve al instante. 4) En <b>Suscripción</b> cambia de plan y verás cómo se ocultan o se muestran los datos de contacto. <button class="btn2" onclick="resetDemo()">Restablecer demo</button></div>
-      <footer>BUSCODOCENTE v12 · Prototipo funcional sin backend: los datos son de demostración y viven en tu navegador. No se intercambian datos de contacto fuera de la plataforma antes de la contratación.</footer>
+      <div class="aviso"><b>Cómo probar esta v13 en 2 minutos:</b> 1) Entra como <b>empresa contratadora</b> y ve a <b>Selección docente</b>, filtra por área FUNDAE y pulsa <b>Desbloquear candidato · 1 crédito</b>. 2) Cierra sesión y entra como <b>docente</b>: verás esa contratación en <b>Contratación</b> y en <b>Mensajería</b>. 3) Como docente contratado, añade un registro en <b>Seguimiento</b> y el centro lo ve al instante. 4) En <b>Suscripción</b> cambia de plan y verás cómo se ocultan o se muestran los datos de contacto. <button class="btn2" onclick="resetDemo()">Restablecer demo</button></div>
+      <footer>BUSCODOCENTE v13 · Prototipo funcional sin backend: los datos son de demostración y viven en tu navegador. No se intercambian datos de contacto fuera de la plataforma antes de la contratación.</footer>
     </div>
   </div>
 </div></div>
@@ -223,10 +223,10 @@ var SEED={
  ]
 };
 var S;
-try{S=JSON.parse(localStorage.getItem('buscodocente_v12'))||null}catch(e){S=null}
+try{S=JSON.parse(localStorage.getItem('buscodocente_v13'))||null}catch(e){S=null}
 if(!S||!S.docentes){S=JSON.parse(JSON.stringify(SEED))}
-function save(){try{localStorage.setItem('buscodocente_v12',JSON.stringify(S))}catch(e){}}
-function resetDemo(){localStorage.removeItem('buscodocente_v12');location.reload()}
+function save(){try{localStorage.setItem('buscodocente_v13',JSON.stringify(S))}catch(e){}}
+function resetDemo(){localStorage.removeItem('buscodocente_v13');location.reload()}
 var rol='centro', tab='panel', centroId='c1', docenteId='d1', convId='m1', filtro={fam:'',area:'',cod:'',mod:'',prov:'',franja:'',fecha:'',fechaDesde:'',tipo:'',verif:false,fav:false,max:'',text:''};
 function centro(){return S.centros.find(function(c){return c.id===centroId})||S.centros[0]}
 function docente(){return S.docentes.find(function(d){return d.id===docenteId})||S.docentes[0]}
@@ -242,9 +242,9 @@ function tabsPorRol(){
  if(rol==='docente') return [['tablon','Tablón de ofertas'],['postulaciones','Mis postulaciones'],['favoritos','Favoritos'],['calendario','Calendario'],['panel','Panel'],['contratacion','Contratación'],['seguimiento','Seguimiento'],['facturacion','Facturación'],['mensajeria','Mensajería'],['perfil','Mi perfil']];
  return [['panel','Panel'],['centros','Centros'],['docentes','Docentes'],['ofertas','Ofertas'],['contrataciones','Contrataciones'],['suscripciones','Suscripciones'],['calendario','Calendario'],['mensajeria','Mensajería']];
 }
-/* ===== v12: sesión, login, sidebar, gráficas ===== */
+/* ===== v13: sesión, login, sidebar, gráficas ===== */
 var loginRol='centro';
-var session=null; try{session=JSON.parse(localStorage.getItem('buscodocente_session_v12'))}catch(e){}
+var session=null; try{session=JSON.parse(localStorage.getItem('buscodocente_session_v13'))}catch(e){}
 if(session){rol=session.rol; if(session.centroId) centroId=session.centroId; if(session.docenteId) docenteId=session.docenteId; tab=rol==='docente'?'tablon':'panel';}
 function toast(m){var t=document.getElementById('toast'); if(!t) return; t.textContent=m; t.style.display='block'; setTimeout(function(){t.style.display='none'},2600)}
 function barChart(rows,color){var max=Math.max.apply(null,rows.map(function(r){return r[1]}).concat([1]));return rows.map(function(r){return '<div class="bar-row"><span class="bl">'+esc(r[0])+'</span><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(r[1]/max*100)+'%;background:'+(color||'#0f3d46')+'"></div></div><span class="bv">'+r[1]+'</span></div>'}).join('')}
@@ -269,11 +269,11 @@ function doLogin(){
  rol=loginRol; tab=rol==='docente'?'tablon':'panel';
  var acc=document.getElementById('loginAccount').value;
  if(rol==='centro') centroId=acc; if(rol==='docente') docenteId=acc;
- var prevSesion=null; try{prevSesion=JSON.parse(localStorage.getItem('buscodocente_session_v12'))}catch(e){}
- session={rol:rol,centroId:centroId,docenteId:docenteId,email:em}; try{localStorage.setItem('buscodocente_session_v12',JSON.stringify(session))}catch(e){}
+ var prevSesion=null; try{prevSesion=JSON.parse(localStorage.getItem('buscodocente_session_v13'))}catch(e){}
+ session={rol:rol,centroId:centroId,docenteId:docenteId,email:em}; try{localStorage.setItem('buscodocente_session_v13',JSON.stringify(session))}catch(e){}
  toast('Sesión iniciada como '+({centro:'centro',docente:'docente',admin:'administrador'})[rol]); if(prevSesion&&prevSesion.rol===rol&&((rol==='centro'&&prevSesion.centroId===centroId)||(rol==='docente'&&prevSesion.docenteId===docenteId)||rol==='admin')) toast('Sesión anterior cerrada: solo puede haber 1 sesión activa por usuario.'); render();
 }
-function logout(){centroSel=null;docenteSel=null;session=null; try{localStorage.removeItem('buscodocente_session_v12')}catch(e){} document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; renderLogin()}
+function logout(){centroSel=null;docenteSel=null;session=null; try{localStorage.removeItem('buscodocente_session_v13')}catch(e){} document.getElementById('app').style.display='none'; document.getElementById('login').style.display='flex'; renderLogin()}
 function toggleSidebar(){document.body.classList.toggle('sb-collapsed'); try{localStorage.setItem('buscodocente_sb',document.body.classList.contains('sb-collapsed')?'1':'0')}catch(e){}}
 try{if(localStorage.getItem('buscodocente_sb')==='1') document.body.classList.add('sb-collapsed')}catch(e){}
 function exportDocentesCSV(){toast('La exportación masiva está bloqueada en todos los planes para proteger los datos de los docentes. La descarga del expediente solo se activa con el candidato desbloqueado y contratado.');}
@@ -313,7 +313,7 @@ function renderChrome(){
  var who= rol==='admin'?'Administrador':(rol==='centro'?centro().nombre:docente().nombre);
  var sub= rol==='admin'?'Acceso a todo':(rol==='centro'?planNombre(centro().plan):docente().esp);
  var secs={}; menuItems().forEach(function(m){(secs[m[3]]=secs[m[3]]||[]).push(m)});
- sb.innerHTML='<div class="logo"><img class="mark-img" src="'+LOGO_MARK+'" alt="B"> <span class="logo-text">BUSCODOCENTE</span><span class="mark">B</span> <span class="badge">v12</span></div><nav>'+Object.keys(secs).map(function(sec){return '<div class="sec">'+sec+'</div>'+secs[sec].map(function(m){return '<button class="'+(tab===m[1]?'act':'')+'" onclick="tab=\''+m[1]+'\';centroSel=null;docenteSel=null;document.body.classList.remove(\'sb-open\');render()"><span class="ico">'+m[2]+'</span><span class="lbl n">'+m[0]+'</span>'+(m[4]?'<span class="bdg">'+m[4]+'</span>':'')+'</button>'}).join('')}).join('')+'</nav><div class="userbox"><b class="lbl">'+esc(who)+'</b><span class="lbl">'+esc(sub)+'</span><p style="margin:8px 0 0"><button class="btn2" style="width:100%" onclick="logout()">Cerrar sesión</button></p></div>';
+ sb.innerHTML='<div class="logo"><img class="mark-img" src="'+LOGO_MARK+'" alt="B"> <span class="logo-text">BUSCODOCENTE</span><span class="mark">B</span> <span class="badge">v13</span></div><nav>'+Object.keys(secs).map(function(sec){return '<div class="sec">'+sec+'</div>'+secs[sec].map(function(m){return '<button class="'+(tab===m[1]?'act':'')+'" onclick="tab=\''+m[1]+'\';centroSel=null;docenteSel=null;document.body.classList.remove(\'sb-open\');render()"><span class="ico">'+m[2]+'</span><span class="lbl n">'+m[0]+'</span>'+(m[4]?'<span class="bdg">'+m[4]+'</span>':'')+'</button>'}).join('')}).join('')+'</nav><div class="userbox"><b class="lbl">'+esc(who)+'</b><span class="lbl">'+esc(sub)+'</span><p style="margin:8px 0 0"><button class="btn2" style="width:100%" onclick="logout()">Cerrar sesión</button></p></div>';
  var tb=document.getElementById('topbar'); if(tb) tb.innerHTML='<button class="btn2" onclick="if(window.innerWidth<=820){document.body.classList.toggle(\'sb-open\')}else{toggleSidebar()}">'+ICONS.menu+'</button><b>'+esc({panel:'Panel',seleccion:'Selección docente',ofertas:rol==='centro'?'Mis ofertas':'Ofertas',tablon:'Tablón de ofertas',postulaciones:'Mis postulaciones',contratacion:'Contratación',seguimiento:'Seguimiento',facturacion:'Facturación',mensajeria:'Mensajería',perfil:'Mi perfil',suscripcion:'Suscripción',centros:'Centros',docentes:'Docentes',contrataciones:'Contrataciones',suscripciones:'Suscripciones',favoritos:'Favoritos',calendario:'Calendario'}[tab]||'Panel')+'</b>'+(tab==='seleccion'||tab==='tablon'?'<div class="search"><input id="topSearch" placeholder="Buscar docente, curso o centro…" value="'+esc(filtro.text||'')+'" oninput="filtro.text=this.value;renderVista()"></div>':'')+'<button class="bell" title="Mensajes sin leer" onclick="tab=\'mensajeria\';render()">'+ICONS.bell+'<i>'+unreadCount()+'</i></button><span class="mut" style="white-space:nowrap">'+esc(who)+'</span>';
 }
 function setRol(r){rol=r;tab='panel';render()}
@@ -439,7 +439,7 @@ var AREAS=[
 function areaDe(cod){return AREAS.find(function(x){return x.c===cod})||null}
 function areaNombre(cod){var a=areaDe(cod);return a?(a.c+' · '+a.a):cod}
 
-/* ===== v12: créditos y desbloqueo (doc perfil_cliente_y_cuotas) ===== */
+/* ===== v13: créditos y desbloqueo (doc perfil_cliente_y_cuotas) ===== */
 function creditosPlan(p){return p==='premium'?20:5}
 function estaDesbloqueado(did){var c=centro();return !!(c&&(c.desbloq||[]).indexOf(did)>=0)}
 function diasDesde(f){if(!f)return null;return Math.floor((new Date(hoy())-new Date(f))/86400000)}
@@ -589,7 +589,7 @@ function panelHTML(){
   var pend=S.facturas.filter(function(f){return f.centroId===centroId&&f.estado==='Pendiente'}).reduce(function(a,f){return a+f.importe},0);
   var prox=S.ofertas.filter(function(o){return o.centroId===centroId&&o.estado==='Abierta'}).sort(function(a,b){return a.inicio<b.inicio?-1:1}).slice(0,4);
   return '<div class="kpis">'+kpi(mis.length,'Ofertas publicadas','ofertas')+kpi(mis.reduce(function(a,o){return a+o.postulantes.length},0),'Postulaciones recibidas','ofertas')+kpi(ks.filter(function(k){return k.estado==='Contratado'}).length,'Docentes contratados','contratacion')+kpi(pend+' €','Pendiente de pago','facturacion')+'</div>'+
-  '<div class="grid" style="margin-top:14px"><div class="card"><h3>Postulaciones por oferta</h3>'+(mis.length?barChart(mis.map(function(o){return [o.titulo.slice(0,22),o.postulantes.length]}),'#0f3d46'):'<p class="mut">Publica tu primera oferta para ver postulaciones aquí.</p>')+'</div>'+
+  '<div class="grid" style="margin-top:14px"><div class="card"><h3>Postulaciones por oferta</h3>'+(mis.length?barChart(mis.map(function(o){return [o.titulo,o.postulantes.length]}),'#0f3d46'):'<p class="mut">Publica tu primera oferta para ver postulaciones aquí.</p>')+'</div>'+
   '<div class="card"><h3>Contrataciones por estado</h3>'+donut([['Contratado',ks.filter(function(k){return k.estado==='Contratado'}).length,'#16a34a'],['En negociación',ks.filter(function(k){return k.estado==='En negociación'}).length,'#f59e0b'],['Finalizado',ks.filter(function(k){return k.estado==='Finalizado'}).length,'#94a3b8']])+'</div>'+
   '<div class="card"><h3>Próximos cursos</h3>'+(prox.length?prox.map(function(o){return '<p>'+ICONS.calendar+' <b>'+esc(o.inicio)+'</b> — '+esc(o.titulo)+' · '+o.postulantes.length+' postulantes</p>'}).join(''):'<p class="mut">Sin cursos próximos.</p>')+'<p><button class="btn" onclick="tab=\'ofertas\';render()">Publicar una oferta</button></p></div>'+
   '<div class="card"><h3>Tu plan</h3><p><b>'+esc(planNombre(centro().plan))+'</b></p><p>Créditos de desbloqueo: <b>'+(centro().creditos||0)+'</b> este mes.</p><p class="mut">Los perfiles son anónimos hasta desbloquearlos (1 crédito). En Premium ves los títulos de los documentos y la tarifa sin gastar crédito.</p><p><button class="btn2" onclick="tab=\'suscripcion\';render()">Cambiar de plan</button> <button class="btn2" onclick="comprarBonos()">Bono +5 créditos · 39 €</button></p></div></div>';
@@ -601,7 +601,7 @@ function panelHTML(){
  var porFam2={}; S.ofertas.filter(function(o){return o.estado==='Abierta'}).forEach(function(o){porFam2[o.familia]=(porFam2[o.familia]||0)+1});
  return '<div class="kpis">'+kpi(S.ofertas.filter(function(o){return o.estado==='Abierta'}).length,'Ofertas abiertas','tablon')+kpi(misPost.length,'Tus postulaciones','postulaciones')+kpi(misK.filter(function(k){return k.estado==='Contratado'}).length,'Cursos contratados','contratacion')+kpi(totalIng+' €','Facturado en la demo','facturacion')+'</div>'+
  '<div class="grid" style="margin-top:14px"><div class="card"><h3>Ofertas por familia</h3>'+barChart(Object.keys(porFam2).map(function(f){return [f,porFam2[f]]}),'#0f3d46')+'<p class="mut">Dónde hay más demanda ahora mismo.</p></div>'+
- '<div class="card"><h3>Tus ingresos por factura</h3>'+(ing.length?barChart(ing.map(function(f){return [f.concepto.slice(0,20),f.importe]}),'#16a34a'):'<p class="mut">Aún no has emitido facturas. Cuando te contraten, emítelas en Facturación.</p>')+'</div>'+
+ '<div class="card"><h3>Tus ingresos por factura</h3>'+(ing.length?barChart(ing.map(function(f){return [f.concepto,f.importe]}),'#16a34a'):'<p class="mut">Aún no has emitido facturas. Cuando te contraten, emítelas en Facturación.</p>')+'</div>'+
  '<div class="card"><h3>Tu perfil</h3><p>'+ICONS.star+' <b>'+docente().val+'</b> de valoración media · '+docente().exp+' años de experiencia · <b>'+docente().precio+' €/hora</b></p><p class="mut">'+esc(docente().bio)+'</p><p><button class="btn2" onclick="tab=\'perfil\';render()">Completar mi perfil</button></p></div>'+
  '<div class="card"><h3>Próximos cursos contratados</h3>'+(misK.length?misK.map(function(k){var o=oferta(k.ofertaId);return '<p>'+ICONS.calendar+' <b>'+esc(k.fecha)+'</b> — '+esc(o?o.titulo:'Curso')+' · '+esc(k.estado)+'</p>'}).join(''):'<p class="mut">Aún no tienes cursos contratados. Postúlate en el tablón.</p>')+'<p><button class="btn" onclick="tab=\'tablon\';render()">Ver ofertas</button></p></div></div>';
 }
